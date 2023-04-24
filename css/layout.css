@@ -1,0 +1,24 @@
+.container {
+  max-width: 992px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.row {
+  display: flex;
+  width: 100%;
+}
+
+.column-10,
+.column-90 {
+  display: flex;
+  flex-direction: column;
+}
+
+.column-10 {
+  width: 10%;
+}
+
+.column-90 {
+  width: 90%;
+}
