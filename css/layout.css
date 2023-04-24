@@ -2,10 +2,19 @@
   display: none !important;
 }
 
+html {
+  min-height: 100%;
+}
+
+body {
+  height: 100vh;
+}
+
 .container {
-  max-width: 992px;
-  margin: 0 auto;
-  padding: 0 1rem;
+  max-width: 575px;
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
 .row {
@@ -14,7 +23,10 @@
 }
 
 .column-10,
-.column-90 {
+.column-90,
+.column-100,
+.column-50,
+.column-25 {
   display: flex;
   flex-direction: column;
 }
@@ -25,4 +37,24 @@
 
 .column-90 {
   width: 90%;
+}
+
+.column-100,
+.column-50,
+.column-25 {
+  width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  .container {
+    max-width: 900px;
+  }
+
+  .column-50 {
+    width: 50%;
+  }
+
+  .column-25 {
+    width: 25%;
+  }
 }

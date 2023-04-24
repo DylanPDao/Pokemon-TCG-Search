@@ -14,32 +14,28 @@
 </head>
 <body>
   <header>
+    <div class="row header-row">
+      <div class="column-10">
+        <div class="row icon-row">
+          <i class="fa-solid fa-bars"></i>
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+      </div>
+      <div class="column-90">
+        <p class="header">Pokemon Comps &amp; Deck Builder</p>
+      </div>
+    </div>
   </header>
-  <main>
-    <div class="container">
-      <div class="row header-row">
-        <div class="column-10">
-          <div class="row icon-row">
-            <i class="fa-solid fa-bars"></i>
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </div>
-        </div>
-        <div class="column-90">
-          <p class="header">Pokemon Comps &amp; Deck Builder</p>
-        </div>
-      </div>
-      <form class="row search-row hidden">
-        <input type="text" class="search-bar" placeholder="Who's that pokemon?">
-        <input type="submit" class="submit-btn" value="PokeSearch">
-      </form>
-      <div class="row main-row">
-        <div class="poke-search">
-        </div>
-        <div class="poke-view hidden">
-        </div>
-        <div class="poke-deck hidden">
-        </div>
-      </div>
+  <main class="container">
+    <form class="row search-row">
+      <input type="text" class="search-bar" placeholder="Who's that pokemon?">
+      <input type="submit" class="submit-btn" value="PokeSearch">
+    </form>
+    <div class="row main-row">
+      <div class="column-100 poke-search main"></div>
+      <div class="column-50 poke-view hidden main"></div>
+      <div class="column-50 poke-info hidden main"></div>
+      <div class=" column-100 poke-deck hidden main"></div>
     </div>
     <div class="add-row row">
       <button class="add-btn">Add</button>
