@@ -1,11 +1,12 @@
 /* sizing the boxes for conent */
 .main-row {
-  height: 93%;
+  justify-content: center;
+  align-items: center;
 }
 
 .main {
   border: 4px solid #f4b266;
-  margin: 1rem 0;
+  margin: 0.25rem;
   border-radius: 1rem;
 }
 
@@ -56,4 +57,36 @@
 
 .search-bar:focus {
   width: 15rem;
+}
+
+/* add button and page buttons */
+.add-btn {
+  background-color: #0e3b43;
+  color: #f4b266;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+}
+
+.fa-arrow-left,
+.fa-arrow-right {
+  font-size: 2rem;
+}
+
+.arrow-row {
+  justify-content: space-around;
+}
+
+/* img setup */
+img {
+  border-radius: 0.5rem;
+}
+
+.found-poke {
+  padding: 1rem;
+}
+
+/* pokeSearch row styling */
+.poke-search {
+  flex-wrap: wrap;
 }
