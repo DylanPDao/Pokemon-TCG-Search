@@ -1,15 +1,19 @@
 // global variable selectors
 const $pokeSearch = document.querySelector('.poke-search');
+const $pokeSearchDiv = document.querySelector('.poke-search-div');
 const $rightArrow = document.querySelector('.fa-arrow-right');
 const $leftArrow = document.querySelector('.fa-arrow-left');
-let cardData;
 const $form = document.querySelector('form');
 const $questionMark = document.querySelector('.fa-magnifying-glass');
 const $searchBar = document.querySelector('.search-bar');
 const $searchBarRow = document.querySelector('.search-row');
-
-// const $pokeView = document.querySelector('.poke-view');
+const $pokeView = document.querySelector('.poke-view');
 // const $pokeInfo = document.querySelector('.poke-info');
+const $main = document.querySelectorAll('.main2');
+let cardData;
+let pokeCount = 8;
+let pokeIndex = 8;
+
 // const $pokeDeck = document.querySelector('.poke-deck');
 
 // search bar focus in and out
@@ -23,7 +27,18 @@ $searchBar.addEventListener('focusout', function (e) {
   $searchBar.style.opacity = 0;
 });
 
-// render pokemon onto screen
+// view swap
+function viewSwap(view) {
+  for (let i = 0; i < $main.length; i++) {
+    if ($main[i].classList.contains(view) !== true) {
+      $main[i].classList.add('hidden');
+    } else {
+      $main[i].classList.remove('hidden');
+    }
+  }
+}
+
+// render pokemon onto search screen
 function renderPokeSearch(pokemon) {
   // create content and give them names
   const $img = document.createElement('img');
@@ -33,6 +48,11 @@ function renderPokeSearch(pokemon) {
   // appending
   return $img;
 }
+
+// render pokemon info onto screen
+// function renderPokeInfo(pokemon) {
+
+// }
 
 // make the http request
 function searchPoke(name) {
@@ -57,10 +77,10 @@ $form.addEventListener('submit', function (e) {
   $searchBar.focus();
   const $value = $form.elements[0].value;
   searchPoke($value);
+  viewSwap('poke-search-div');
 });
 
-let pokeIndex = 8;
-let pokeCount = 8;
+// arrows can move forward or backwards for searched cards;
 $rightArrow.addEventListener('click', function (e) {
   if (cardData.length !== 0) {
     const foundPoke = document.querySelectorAll('.found-poke');
@@ -87,6 +107,21 @@ $leftArrow.addEventListener('click', function (e) {
       foundPoke[j].dataset.cardid = cardData.data[pokeIndex].id;
       if (j < 7) {
         j++;
+      }
+    }
+  }
+});
+
+// view card details
+$pokeSearchDiv.addEventListener('click', function (e) {
+  if (e.target.classList.contains('found-poke')) {
+    for (let i = 0; i < cardData.data.length; i++) {
+      if (e.target.dataset.cardid === cardData.data[i].id) {
+        const image = renderPokeSearch(cardData.data[i].images.large);
+        image.setAttribute('data-cardId', cardData.data[i].id);
+        image.className = 'column-100 view-poke';
+        $pokeView.appendChild(image);
+        viewSwap('poke-details');
       }
     }
   }
