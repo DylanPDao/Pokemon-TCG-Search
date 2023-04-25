@@ -27,18 +27,23 @@
     </div>
   </header>
   <main class="container">
-    <form class="row search-row">
-      <input type="text" class="search-bar" placeholder="Who's that pokemon?">
-      <input type="submit" class="submit-btn" value="PokeSearch">
-    </form>
     <div class="row main-row">
-      <div class="column-100 poke-search main"></div>
-      <div class="column-50 poke-view hidden main"></div>
-      <div class="column-50 poke-info hidden main"></div>
-      <div class=" column-100 poke-deck hidden main"></div>
+      <div class="column-100 poke-search main">
+        <form class="row search-row hidden">
+          <input type="text" class="search-bar" placeholder="Who's that pokemon?">
+        </form>
+      </div>
+      <div class="column-50 poke-view main hidden"></div>
+      <div class="column-50 poke-info main hidden"></div>
+      <div class=" column-100 poke-deck main hidden"></div>
     </div>
-    <div class="add-row row">
-      <button class="add-btn">Add</button>
+    <div class="row">
+      <div class="column-50 add-col">
+        <div class="hidden">Page:</div>
+      </div>
+      <div class="column-50 add-col">
+        <button class="add-btn">Add</button>
+      </div>
     </div>
     <div class="ham-menu row hidden">
       <div class="row">
