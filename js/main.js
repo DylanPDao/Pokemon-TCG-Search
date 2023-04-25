@@ -1,7 +1,7 @@
 // global variable selectors
 const $pokeSearch = document.querySelector('.poke-search');
 const $rightArrow = document.querySelector('.fa-arrow-right');
-// const $leftArrow = document.querySelector('.fa-arrow-left');
+const $leftArrow = document.querySelector('.fa-arrow-left');
 let cardData;
 const $form = document.querySelector('form');
 const $questionMark = document.querySelector('.fa-magnifying-glass');
@@ -66,6 +66,22 @@ $rightArrow.addEventListener('click', function (e) {
     const foundPoke = document.querySelectorAll('.found-poke');
     let j = 0;
     pokeCount += 8;
+    for (pokeIndex; pokeIndex < pokeCount; pokeIndex++) {
+      foundPoke[j].src = cardData.data[pokeIndex].images.large;
+      foundPoke[j].dataset.cardid = cardData.data[pokeIndex].id;
+      if (j < 7) {
+        j++;
+      }
+    }
+  }
+});
+
+$leftArrow.addEventListener('click', function (e) {
+  if (pokeIndex >= 16) {
+    const foundPoke = document.querySelectorAll('.found-poke');
+    let j = 0;
+    pokeIndex -= 16;
+    pokeCount -= 8;
     for (pokeIndex; pokeIndex < pokeCount; pokeIndex++) {
       foundPoke[j].src = cardData.data[pokeIndex].images.large;
       foundPoke[j].dataset.cardid = cardData.data[pokeIndex].id;
