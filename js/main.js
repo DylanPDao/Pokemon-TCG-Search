@@ -54,7 +54,7 @@ function uiControlSwap(view) {
     $deckBtn.classList.remove('hidden');
     $searchBtn.classList.add('hidden');
     $addBtn.classList.add('hidden');
-  } else if (view === 'view') {
+  } else if (view === 'details') {
     $viewBtn.classList.add('hidden');
     $rightArrow.classList.add('hidden');
     $leftArrow.classList.add('hidden');
@@ -70,6 +70,47 @@ function uiControlSwap(view) {
     $addBtn.classList.add('hidden');
   }
 }
+// ui functionality
+$viewBtn.addEventListener('click', function (e) {
+  viewSwap('poke-details');
+});
+$searchBtn.addEventListener('click', function (e) {
+  viewSwap('poke-search-div');
+});
+$deckBtn.addEventListener('click', function (e) {
+  viewSwap('poke-deck');
+});
+
+// arrows can move forward or backwards for searched cards;
+$rightArrow.addEventListener('click', function (e) {
+  if (cardData.length !== 0) {
+    const foundPoke = document.querySelectorAll('.found-poke');
+    let cardCount = 0;
+    pokeCount += 8;
+    for (pokeIndex; pokeIndex < pokeCount; pokeIndex++) {
+      foundPoke[cardCount].src = cardData.data[pokeIndex].images.large;
+      foundPoke[cardCount].dataset.cardid = cardData.data[pokeIndex].id;
+      if (cardCount < 7) {
+        cardCount++;
+      }
+    }
+  }
+});
+$leftArrow.addEventListener('click', function (e) {
+  if (pokeIndex >= 16) {
+    const foundPoke = document.querySelectorAll('.found-poke');
+    let cardCount = 0;
+    pokeIndex -= 16;
+    pokeCount -= 8;
+    for (pokeIndex; pokeIndex < pokeCount; pokeIndex++) {
+      foundPoke[cardCount].src = cardData.data[pokeIndex].images.large;
+      foundPoke[cardCount].dataset.cardid = cardData.data[pokeIndex].id;
+      if (cardCount < 7) {
+        cardCount++;
+      }
+    }
+  }
+});
 
 // render pokemon onto search screen
 function renderPokeSearch(pokemon) {
@@ -117,37 +158,6 @@ $form.addEventListener('submit', function (e) {
   viewSwap('poke-search-div');
   uiControlSwap('search');
   $searchBar.blur();
-});
-
-// arrows can move forward or backwards for searched cards;
-$rightArrow.addEventListener('click', function (e) {
-  if (cardData.length !== 0) {
-    const foundPoke = document.querySelectorAll('.found-poke');
-    let cardCount = 0;
-    pokeCount += 8;
-    for (pokeIndex; pokeIndex < pokeCount; pokeIndex++) {
-      foundPoke[cardCount].src = cardData.data[pokeIndex].images.large;
-      foundPoke[cardCount].dataset.cardid = cardData.data[pokeIndex].id;
-      if (cardCount < 7) {
-        cardCount++;
-      }
-    }
-  }
-});
-$leftArrow.addEventListener('click', function (e) {
-  if (pokeIndex >= 16) {
-    const foundPoke = document.querySelectorAll('.found-poke');
-    let cardCount = 0;
-    pokeIndex -= 16;
-    pokeCount -= 8;
-    for (pokeIndex; pokeIndex < pokeCount; pokeIndex++) {
-      foundPoke[cardCount].src = cardData.data[pokeIndex].images.large;
-      foundPoke[cardCount].dataset.cardid = cardData.data[pokeIndex].id;
-      if (cardCount < 7) {
-        cardCount++;
-      }
-    }
-  }
 });
 
 // side bar menu functionality
