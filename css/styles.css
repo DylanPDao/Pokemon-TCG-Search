@@ -1,0 +1,126 @@
+/* sizing the boxes for conent */
+.main-row {
+  justify-content: center;
+  align-items: center;
+}
+
+.main {
+  border: 4px solid #f4b266;
+  margin: 0.25rem;
+  border-radius: 1rem;
+}
+
+.poke-view {
+  margin-right: 0.5rem;
+}
+
+.poke-info {
+  margin-left: 0.5rem;
+}
+
+/* styling the header */
+.header-row {
+  background-color: #0e3b43;
+  color: #f4b266;
+  display: flex;
+  align-items: center;
+}
+
+.icon-row {
+  justify-content: space-around;
+}
+
+.header {
+  align-self: center;
+}
+
+/* search bar styling */
+.search-row {
+  justify-content: flex-start;
+  margin: 1rem;
+}
+
+.search-bar {
+  outline: none;
+  border: none;
+  background: #0e3b43;
+  color: #f4b266;
+  text-shadow: 0 0 10px #0e3b43;
+  border-radius: 0.25rem;
+  transition: all 1s;
+  letter-spacing: 0.1em;
+  height: 1.5rem;
+  box-shadow: 0 0 25px 0 #0e3b43;
+  width: 1rem;
+  opacity: 0;
+}
+
+.search-bar:focus {
+  width: 15rem;
+}
+
+/* add button and page buttons */
+.add-btn {
+  background-color: #0e3b43;
+  color: #f4b266;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+}
+
+.fa-arrow-left,
+.fa-arrow-right {
+  font-size: 2rem;
+}
+
+.arrow-row {
+  justify-content: space-around;
+}
+
+/* img setup */
+img {
+  border-radius: 0.5rem;
+}
+
+.found-poke {
+  padding: 1rem;
+}
+
+/* pokeSearch row styling */
+.poke-search {
+  flex-wrap: wrap;
+}
+
+/* styling hamgurber menu */
+.ham-menu {
+  background-color: #0e3b43;
+  color: #f4b266;
+  position: absolute;
+  width: 12rem;
+  left: 0;
+  justify-content: center;
+  top: 3rem;
+}
+
+ul {
+  width: 10rem;
+  list-style-type: none;
+}
+
+li {
+  display: flex;
+  flex-direction: column;
+}
+
+/* add animations */
+li:active {
+  transform: translate(5px);
+}
+
+fa-arow-left:active {
+  transform: translate(-5px);
+}
+
+fa-arow-right:active {
+  transform: translate(5px);
+}
