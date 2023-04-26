@@ -2,6 +2,10 @@
 const $pokeSearch = document.querySelector('.poke-search');
 const $pokeSearchDiv = document.querySelector('.poke-search-div');
 const $rightArrow = document.querySelector('.fa-arrow-right');
+const $searchBtn = document.querySelector('.search-btn');
+const $deckBtn = document.querySelector('.deck-btn');
+const $viewBtn = document.querySelector('.view-btn');
+const $addBtn = document.querySelector('.add-btn');
 const $leftArrow = document.querySelector('.fa-arrow-left');
 const $form = document.querySelector('form');
 const $questionMark = document.querySelector('.fa-magnifying-glass');
@@ -39,6 +43,31 @@ function viewSwap(view) {
     } else {
       $main[i].classList.remove('hidden');
     }
+  }
+}
+// ui swapping
+function uiControlSwap(view) {
+  if (view === 'search') {
+    $rightArrow.classList.remove('hidden');
+    $leftArrow.classList.remove('hidden');
+    $viewBtn.classList.remove('hidden');
+    $deckBtn.classList.remove('hidden');
+    $searchBtn.classList.add('hidden');
+    $addBtn.classList.add('hidden');
+  } else if (view === 'view') {
+    $viewBtn.classList.add('hidden');
+    $rightArrow.classList.add('hidden');
+    $leftArrow.classList.add('hidden');
+    $deckBtn.classList.remove('hidden');
+    $searchBtn.classList.remove('hidden');
+    $addBtn.classList.remove('hidden');
+  } else {
+    $viewBtn.classList.remove('hidden');
+    $searchBtn.classList.remove('hidden');
+    $rightArrow.classList.add('hidden');
+    $leftArrow.classList.add('hidden');
+    $deckBtn.classList.add('hidden');
+    $addBtn.classList.add('hidden');
   }
 }
 
@@ -105,7 +134,6 @@ $rightArrow.addEventListener('click', function (e) {
     }
   }
 });
-
 $leftArrow.addEventListener('click', function (e) {
   if (pokeIndex >= 16) {
     const foundPoke = document.querySelectorAll('.found-poke');
@@ -126,20 +154,23 @@ $leftArrow.addEventListener('click', function (e) {
 $ham.addEventListener('click', function (e) {
   $hamMenu.classList.remove('hidden');
 });
-
 $hamSet.addEventListener('click', function (e) {
   $setList.classList.remove('hidden');
   for (let i = 0; i < $setImg.length; i++) {
     $setImg[i].classList.remove('hidden');
   }
 });
-
 $back.addEventListener('click', function (e) {
   $hamMenu.classList.add('hidden');
   for (let i = 0; i < $setImg.length; i++) {
     $setImg[i].classList.add('hidden');
   }
 });
+
+// hide side menu
+function hideSideMenu() {
+  $hamMenu.classList.add('hidden');
+}
 
 // search by set id
 function searchPokeSet(setId) {
@@ -166,7 +197,6 @@ function searchPokeSet(setId) {
   });
   xhr.send();
 }
-
 $ul.addEventListener('click', function (e) {
   if (e.target.tagName === 'IMG') {
     const setID = e.target.dataset.set;
@@ -177,17 +207,6 @@ $ul.addEventListener('click', function (e) {
   }
 });
 
-function uiControlSwap(view) {
-  if (view === 'search') {
-    $rightArrow.classList.remove('hidden');
-    $leftArrow.classList.remove('hidden');
-  }
-}
-
-// hide side menu
-function hideSideMenu() {
-  $hamMenu.classList.add('hidden');
-}
 // view card details
 $pokeSearchDiv.addEventListener('click', function (e) {
   if (e.target.classList.contains('found-poke')) {
