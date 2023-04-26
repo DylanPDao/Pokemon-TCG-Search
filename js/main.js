@@ -77,10 +77,10 @@ function searchPoke(name) {
 // get info from form and populate page
 $form.addEventListener('submit', function (e) {
   event.preventDefault();
-  $searchBar.focus();
   const $value = $form.elements[0].value;
   searchPoke($value);
   viewSwap('poke-search-div');
+  uiControlSwap('search');
 });
 
 // arrows can move forward or backwards for searched cards;
@@ -118,6 +118,8 @@ $leftArrow.addEventListener('click', function (e) {
 // side bar menu functionality
 const $setList = document.querySelector('.set-list');
 const $setImg = document.querySelectorAll('.set-img');
+const $back = document.querySelector('.ham-back');
+const $ul = document.querySelector('ul');
 $ham.addEventListener('click', function (e) {
   $hamMenu.classList.remove('hidden');
 });
@@ -129,6 +131,45 @@ $hamSet.addEventListener('click', function (e) {
   }
 });
 
+$back.addEventListener('click', function (e) {
+  $hamMenu.classList.add('hidden');
+  for (let i = 0; i < $setImg.length; i++) {
+    $setImg[i].classList.add('hidden');
+  }
+});
+
+// search by set id
+function searchPokeSet(setId) {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', 'https://api.pokemontcg.io/v2/cards/?q=set.id:' + setId);
+  xhr.setRequestHeader('X-Api-Key', 'f81270c6-9d17-41a7-90ff-04e77b2b4273');
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function () {
+    cardData = xhr.response;
+    for (let i = 0; i < 8; i++) {
+      const image = renderPokeSearch(cardData.data[i].images.large);
+      image.setAttribute('data-cardId', cardData.data[i].id);
+      $pokeSearch.appendChild(image);
+    }
+  });
+  xhr.send();
+}
+
+$ul.addEventListener('click', function (e) {
+  if (e.target.tagName === 'IMG') {
+    const setID = e.target.dataset.set;
+    searchPokeSet(setID);
+    viewSwap('poke-search-div');
+    uiControlSwap('search');
+  }
+});
+
+function uiControlSwap(view) {
+  if (view === 'search') {
+    $rightArrow.classList.remove('hidden');
+    $leftArrow.classList.remove('hidden');
+  }
+}
 // view card details
 $pokeSearchDiv.addEventListener('click', function (e) {
   if (e.target.classList.contains('found-poke')) {
