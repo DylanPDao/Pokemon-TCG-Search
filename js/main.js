@@ -20,7 +20,6 @@ const $back = document.querySelector('.ham-back');
 const $ul = document.querySelector('ul');
 const $main = document.querySelectorAll('.main2');
 const $setImg = document.querySelectorAll('.set-img');
-let cardData;
 let pokeCount = 8;
 let pokeIndex = 8;
 
@@ -42,6 +41,13 @@ function viewSwap(view) {
       $main[i].classList.add('hidden');
     } else {
       $main[i].classList.remove('hidden');
+      if (view === 'poke-search-div') {
+        uiControlSwap('search');
+      } else if (view === 'poke-details') {
+        uiControlSwap('details');
+      } else {
+        uiControlSwap();
+      }
     }
   }
 }
@@ -83,13 +89,13 @@ $deckBtn.addEventListener('click', function (e) {
 
 // arrows can move forward or backwards for searched cards;
 $rightArrow.addEventListener('click', function (e) {
-  if (cardData.length !== 0) {
+  if (data.cardData.length !== 0) {
     const foundPoke = document.querySelectorAll('.found-poke');
     let cardCount = 0;
     pokeCount += 8;
     for (pokeIndex; pokeIndex < pokeCount; pokeIndex++) {
-      foundPoke[cardCount].src = cardData.data[pokeIndex].images.large;
-      foundPoke[cardCount].dataset.cardid = cardData.data[pokeIndex].id;
+      foundPoke[cardCount].src = data.cardData.data[pokeIndex].images.large;
+      foundPoke[cardCount].dataset.cardid = data.cardData.data[pokeIndex].id;
       if (cardCount < 7) {
         cardCount++;
       }
@@ -103,8 +109,8 @@ $leftArrow.addEventListener('click', function (e) {
     pokeIndex -= 16;
     pokeCount -= 8;
     for (pokeIndex; pokeIndex < pokeCount; pokeIndex++) {
-      foundPoke[cardCount].src = cardData.data[pokeIndex].images.large;
-      foundPoke[cardCount].dataset.cardid = cardData.data[pokeIndex].id;
+      foundPoke[cardCount].src = data.cardData.data[pokeIndex].images.large;
+      foundPoke[cardCount].dataset.cardid = data.cardData.data[pokeIndex].id;
       if (cardCount < 7) {
         cardCount++;
       }
@@ -132,18 +138,18 @@ function searchPoke(name) {
   xhr.setRequestHeader('X-Api-Key', 'f81270c6-9d17-41a7-90ff-04e77b2b4273');
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
-    cardData = xhr.response;
+    data.cardData = xhr.response;
     const $found = document.querySelectorAll('.found-poke');
     if ($found.length === 0) {
       for (let i = 0; i < 8; i++) {
-        const image = renderPokeSearch(cardData.data[i].images.large);
-        image.setAttribute('data-cardId', cardData.data[i].id);
+        const image = renderPokeSearch(data.cardData.data[i].images.large);
+        image.setAttribute('data-cardId', data.cardData.data[i].id);
         $pokeSearch.appendChild(image);
       }
     } else {
       for (let i = 0; i < 8; i++) {
-        $found[i].src = cardData.data[i].images.large;
-        $found[i].setAttribute('data-cardId', cardData.data[i].id);
+        $found[i].src = data.cardData.data[i].images.large;
+        $found[i].setAttribute('data-cardId', data.cardData.data[i].id);
       }
     }
   });
@@ -190,18 +196,18 @@ function searchPokeSet(setId) {
   xhr.setRequestHeader('X-Api-Key', 'f81270c6-9d17-41a7-90ff-04e77b2b4273');
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
-    cardData = xhr.response;
+    data.cardData = xhr.response;
     const $found = document.querySelectorAll('.found-poke');
     if ($found.length === 0) {
       for (let i = 0; i < 8; i++) {
-        const image = renderPokeSearch(cardData.data[i].images.large);
-        image.setAttribute('data-cardId', cardData.data[i].id);
+        const image = renderPokeSearch(data.cardData.data[i].images.large);
+        image.setAttribute('data-cardId', data.cardData.data[i].id);
         $pokeSearch.appendChild(image);
       }
     } else {
       for (let i = 0; i < 8; i++) {
-        $found[i].src = cardData.data[i].images.large;
-        $found[i].setAttribute('data-cardId', cardData.data[i].id);
+        $found[i].src = data.cardData.data[i].images.large;
+        $found[i].setAttribute('data-cardId', data.cardData.data[i].id);
       }
     }
   });
@@ -220,10 +226,10 @@ $ul.addEventListener('click', function (e) {
 // view card details
 $pokeSearchDiv.addEventListener('click', function (e) {
   if (e.target.classList.contains('found-poke')) {
-    for (let i = 0; i < cardData.data.length; i++) {
-      if (e.target.dataset.cardid === cardData.data[i].id) {
-        const image = renderPokeSearch(cardData.data[i].images.large);
-        image.setAttribute('data-cardId', cardData.data[i].id);
+    for (let i = 0; i < data.cardData.data.length; i++) {
+      if (e.target.dataset.cardid === data.cardData.data[i].id) {
+        const image = renderPokeSearch(data.cardData.data[i].images.large);
+        image.setAttribute('data-cardId', data.cardData.data[i].id);
         image.className = 'column-100 view-poke';
         $pokeView.appendChild(image);
         viewSwap('poke-details');
