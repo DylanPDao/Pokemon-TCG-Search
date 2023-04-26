@@ -20,9 +20,6 @@ let cardData;
 let pokeCount = 8;
 let pokeIndex = 8;
 
-// const $pokeInfo = document.querySelector('.poke-info');
-// const $pokeDeck = document.querySelector('.poke-deck');
-
 // search bar focus in and out
 $questionMark.addEventListener('click', function (e) {
   $searchBarRow.classList.remove('hidden');
@@ -50,6 +47,7 @@ function renderPokeSearch(pokemon) {
   // create content and give them names
   const $img = document.createElement('img');
   $img.setAttribute('src', pokemon);
+  $img.setAttribute('alt', 'image of pokemon card');
   $img.className = 'column-25 found-poke';
 
   // appending
@@ -96,13 +94,13 @@ $form.addEventListener('submit', function (e) {
 $rightArrow.addEventListener('click', function (e) {
   if (cardData.length !== 0) {
     const foundPoke = document.querySelectorAll('.found-poke');
-    let j = 0;
+    let cardCount = 0;
     pokeCount += 8;
     for (pokeIndex; pokeIndex < pokeCount; pokeIndex++) {
-      foundPoke[j].src = cardData.data[pokeIndex].images.large;
-      foundPoke[j].dataset.cardid = cardData.data[pokeIndex].id;
-      if (j < 7) {
-        j++;
+      foundPoke[cardCount].src = cardData.data[pokeIndex].images.large;
+      foundPoke[cardCount].dataset.cardid = cardData.data[pokeIndex].id;
+      if (cardCount < 7) {
+        cardCount++;
       }
     }
   }
@@ -111,14 +109,14 @@ $rightArrow.addEventListener('click', function (e) {
 $leftArrow.addEventListener('click', function (e) {
   if (pokeIndex >= 16) {
     const foundPoke = document.querySelectorAll('.found-poke');
-    let j = 0;
+    let cardCount = 0;
     pokeIndex -= 16;
     pokeCount -= 8;
     for (pokeIndex; pokeIndex < pokeCount; pokeIndex++) {
-      foundPoke[j].src = cardData.data[pokeIndex].images.large;
-      foundPoke[j].dataset.cardid = cardData.data[pokeIndex].id;
-      if (j < 7) {
-        j++;
+      foundPoke[cardCount].src = cardData.data[pokeIndex].images.large;
+      foundPoke[cardCount].dataset.cardid = cardData.data[pokeIndex].id;
+      if (cardCount < 7) {
+        cardCount++;
       }
     }
   }
