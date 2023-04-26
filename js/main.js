@@ -8,10 +8,14 @@ const $questionMark = document.querySelector('.fa-magnifying-glass');
 const $searchBar = document.querySelector('.search-bar');
 const $searchBarRow = document.querySelector('.search-row');
 const $pokeView = document.querySelector('.poke-view');
-const $main = document.querySelectorAll('.main2');
 const $ham = document.querySelector('.fa-bars');
 const $hamMenu = document.querySelector('.ham-menu');
 const $hamSet = document.querySelector('.ham-set');
+const $setList = document.querySelector('.set-list');
+const $back = document.querySelector('.ham-back');
+const $ul = document.querySelector('ul');
+const $main = document.querySelectorAll('.main2');
+const $setImg = document.querySelectorAll('.set-img');
 let cardData;
 let pokeCount = 8;
 let pokeIndex = 8;
@@ -52,11 +56,6 @@ function renderPokeSearch(pokemon) {
   return $img;
 }
 
-// render pokemon info onto screen
-// function renderPokeInfo(pokemon) {
-
-// }
-
 // make the http request
 function searchPoke(name) {
   const xhr = new XMLHttpRequest();
@@ -81,6 +80,7 @@ $form.addEventListener('submit', function (e) {
   searchPoke($value);
   viewSwap('poke-search-div');
   uiControlSwap('search');
+  $searchBar.blur();
 });
 
 // arrows can move forward or backwards for searched cards;
@@ -116,10 +116,6 @@ $leftArrow.addEventListener('click', function (e) {
 });
 
 // side bar menu functionality
-const $setList = document.querySelector('.set-list');
-const $setImg = document.querySelectorAll('.set-img');
-const $back = document.querySelector('.ham-back');
-const $ul = document.querySelector('ul');
 $ham.addEventListener('click', function (e) {
   $hamMenu.classList.remove('hidden');
 });
@@ -146,10 +142,19 @@ function searchPokeSet(setId) {
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     cardData = xhr.response;
-    for (let i = 0; i < 8; i++) {
-      const image = renderPokeSearch(cardData.data[i].images.large);
-      image.setAttribute('data-cardId', cardData.data[i].id);
-      $pokeSearch.appendChild(image);
+    const $found = document.querySelectorAll('.found-poke');
+    if ($found === null) {
+      for (let i = 0; i < 8; i++) {
+        const image = renderPokeSearch(cardData.data[i].images.large);
+        image.setAttribute('data-cardId', cardData.data[i].id);
+        $pokeSearch.appendChild(image);
+      }
+    } else {
+      const $found = document.querySelectorAll('.found-poke');
+      for (let i = 0; i < 8; i++) {
+        $found[i].src = cardData.data[i].images.large;
+        $found[i].setAttribute('data-cardId', cardData.data[i].id);
+      }
     }
   });
   xhr.send();

@@ -111,3 +111,16 @@ li {
   display: flex;
   flex-direction: column;
 }
+
+/* add animations */
+li:active {
+  transform: translate(5px);
+}
+
+fa-arow-left:active {
+  transform: translate(-5px);
+}
+
+fa-arow-right:active {
+  transform: translate(5px);
+}
