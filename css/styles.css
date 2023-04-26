@@ -90,3 +90,23 @@ img {
 .poke-search {
   flex-wrap: wrap;
 }
+
+/* styling hamgurber menu */
+.ham-menu {
+  background-color: #0e3b43;
+  color: #f4b266;
+  position: absolute;
+  width: 12rem;
+  left: 0;
+  justify-content: center;
+}
+
+ul {
+  width: 10rem;
+  list-style-type: none;
+}
+
+li {
+  display: flex;
+  flex-direction: column;
+}

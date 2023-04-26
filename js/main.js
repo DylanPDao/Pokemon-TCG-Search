@@ -8,12 +8,15 @@ const $questionMark = document.querySelector('.fa-magnifying-glass');
 const $searchBar = document.querySelector('.search-bar');
 const $searchBarRow = document.querySelector('.search-row');
 const $pokeView = document.querySelector('.poke-view');
-// const $pokeInfo = document.querySelector('.poke-info');
 const $main = document.querySelectorAll('.main2');
+const $ham = document.querySelector('.fa-bars');
+const $hamMenu = document.querySelector('.ham-menu');
+const $hamSet = document.querySelector('.ham-set');
 let cardData;
 let pokeCount = 8;
 let pokeIndex = 8;
 
+// const $pokeInfo = document.querySelector('.poke-info');
 // const $pokeDeck = document.querySelector('.poke-deck');
 
 // search bar focus in and out
@@ -109,6 +112,20 @@ $leftArrow.addEventListener('click', function (e) {
         j++;
       }
     }
+  }
+});
+
+// side bar menu functionality
+const $setList = document.querySelector('.set-list');
+const $setImg = document.querySelectorAll('.set-img');
+$ham.addEventListener('click', function (e) {
+  $hamMenu.classList.remove('hidden');
+});
+
+$hamSet.addEventListener('click', function (e) {
+  $setList.classList.remove('hidden');
+  for (let i = 0; i < $setImg.length; i++) {
+    $setImg[i].classList.remove('hidden');
   }
 });
 
