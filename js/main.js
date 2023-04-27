@@ -132,7 +132,7 @@ function renderPokeSearch(pokemon) {
   return $img;
 }
 
-// make the http request
+// make the http request after hitting enter on search bar
 function searchPoke(name) {
   const xhr = new XMLHttpRequest();
   displayLoading();
@@ -188,10 +188,10 @@ $back.addEventListener('click', function (e) {
     $setImg[i].classList.add('hidden');
   }
 });
-
 // hide side menu
 function hideSideMenu() {
   $hamMenu.classList.add('hidden');
+
 }
 
 // search by set id
@@ -353,10 +353,6 @@ const $loader = document.querySelector('.loading');
 function displayLoading() {
   $loaderContainer.classList.remove('hidden');
   $loader.classList.remove('hidden');
-  setTimeout(() => {
-    $loader.classList.add('hidden');
-    $loaderContainer.classList.add('hidden');
-  }, 10000);
 }
 // hide loading
 function hideLoading() {
@@ -364,7 +360,39 @@ function hideLoading() {
   $loader.classList.add('hidden');
 }
 
-// render pokemon by ID
+// render searched pokemon for deck view
+function renderPokeDeckCard(pokemon) {
+  // create col
+  const $col = document.createElement('div');
+  $col.className = 'column-sixth';
+
+  // create poke img
+  const $image = renderPokeSearch(pokemon.data.images.large);
+  $image.setAttribute('data-cardId', pokemon.data.id);
+  $image.className = 'column-100 deck-poke-img';
+  const $row = document.createElement('div');
+  $row.className = 'row poke-deck-row';
+  $row.appendChild($image);
+  $col.appendChild($row);
+
+  // create ui
+  const $row2 = document.createElement('div');
+  $row2.className = 'row poke-deck-row';
+  const $minus = document.createElement('i');
+  $minus.className = 'fa-solid fa-minus';
+  const $count = document.createElement('p');
+  $count.className = 'deck-count';
+  const $plus = document.createElement('i');
+  $plus.className = 'fa-solid fa-plus';
+  $row2.appendChild($minus);
+  $row2.appendChild($count);
+  $row2.appendChild($plus);
+  $col.appendChild($row2);
+
+  return $col;
+}
+
+// search pokemon by id
 function deckPoke(id) {
   const xhr = new XMLHttpRequest();
   displayLoading();
@@ -373,36 +401,11 @@ function deckPoke(id) {
   xhr.setRequestHeader('X-Api-Key', 'f81270c6-9d17-41a7-90ff-04e77b2b4273');
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
-    // create col
-    const $col = document.createElement('div');
-    $col.className = 'column-sixth';
-
-    // create poke img
-    const pokeData = xhr.response;
-    const $image = renderPokeSearch(pokeData.data.images.large);
-    $image.setAttribute('data-cardId', pokeData.data.id);
-    $image.className = 'column-100 deck-poke-img';
-    const $row = document.createElement('div');
-    $row.className = 'row poke-deck-row';
-    $row.appendChild($image);
-    $col.appendChild($row);
-
-    // create ui
-    const $row2 = document.createElement('div');
-    $row2.className = 'row poke-deck-row';
-    const $minus = document.createElement('i');
-    $minus.className = 'fa-solid fa-minus';
-    const $count = document.createElement('p');
-    $count.className = 'deck-count';
-    $count.textContent = data.deck[id];
-    const $plus = document.createElement('i');
-    $plus.className = 'fa-solid fa-plus';
-    $row2.appendChild($minus);
-    $row2.appendChild($count);
-    $row2.appendChild($plus);
-    $col.appendChild($row2);
-
+    const pokemon = xhr.response;
+    const $col = renderPokeDeckCard(pokemon);
     $pokeDeck.appendChild($col);
+    const $deckCount = document.querySelector('.deck-count');
+    $deckCount.textContent = data.deck[id];
     hideLoading();
   });
   xhr.send();
