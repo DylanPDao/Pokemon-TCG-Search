@@ -33,7 +33,8 @@
 
 .column-100,
 .column-50,
-.column-25 {
+.column-25,
+.column-sixth {
   width: 100%;
 }
 
@@ -53,5 +54,9 @@
 
   .column-25 {
     width: 25%;
+  }
+
+  .column-sixth {
+    width: calc(calc(1/6) *100%);
   }
 }

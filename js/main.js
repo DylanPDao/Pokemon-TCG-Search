@@ -1,5 +1,6 @@
 // global variable selectors
 const $pokeSearch = document.querySelector('.poke-search');
+const $pokeDeck = document.querySelector('.poke-deck');
 const $pokeSearchDiv = document.querySelector('.poke-search-div');
 const $pokeInfo = document.querySelector('.poke-info');
 const $rightArrow = document.querySelector('.fa-arrow-right');
@@ -85,7 +86,7 @@ $searchBtn.addEventListener('click', function (e) {
   viewSwap('poke-search-div');
 });
 $deckBtn.addEventListener('click', function (e) {
-  viewSwap('poke-deck');
+  viewSwap('poke-deck-div');
 });
 
 // arrows can move forward or backwards for searched cards;
@@ -362,3 +363,56 @@ function hideLoading() {
   $loaderContainer.classList.add('hidden');
   $loader.classList.add('hidden');
 }
+
+// render pokemon by ID
+function deckPoke(id) {
+  const xhr = new XMLHttpRequest();
+  displayLoading();
+  const targetUrl = encodeURIComponent('https://api.pokemontcg.io/v2/cards/' + id);
+  xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
+  xhr.setRequestHeader('X-Api-Key', 'f81270c6-9d17-41a7-90ff-04e77b2b4273');
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function () {
+    // create col
+    const $col = document.createElement('div');
+    $col.className = 'column-sixth';
+
+    // create poke img
+    const pokeData = xhr.response;
+    const $image = renderPokeSearch(pokeData.data.images.large);
+    $image.setAttribute('data-cardId', pokeData.data.id);
+    $image.className = 'column-100 deck-poke-img';
+    const $row = document.createElement('div');
+    $row.className = 'row';
+    $row.appendChild($image);
+    $col.appendChild($row);
+
+    // create ui
+    const $row2 = document.createElement('div');
+    $row2.className = 'row';
+    const $minus = document.createElement('i');
+    $minus.className = 'fa-solid fa-minus';
+    const $count = document.createElement('p');
+    $count.className = 'deck-count';
+    $count.textContent = data.deck.id;
+    const $plus = document.createElement('i');
+    $plus.className = 'fa-solid fa-plus';
+    $row2.appendChild($minus);
+    $row2.appendChild($count);
+    $row2.appendChild($plus);
+    $col.appendChild($row2);
+
+    $pokeDeck.appendChild($col);
+    hideLoading();
+  });
+  xhr.send();
+}
+
+// add button functionality
+$addBtn.addEventListener('click', function (e) {
+  const $viewPoke = document.querySelector('.view-poke');
+  const $cardId = $viewPoke.dataset.cardid;
+  data.deck[$cardId] = 1;
+  deckPoke($cardId);
+  viewSwap('poke-search-div');
+});
