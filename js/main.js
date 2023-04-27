@@ -406,6 +406,7 @@ function deckPoke(id) {
     $pokeDeck.appendChild($col);
     const $deckCount = document.querySelector('.deck-count');
     $deckCount.textContent = data.deck[id];
+    $deckCount.classList.add(id);
     hideLoading();
   });
   xhr.send();
