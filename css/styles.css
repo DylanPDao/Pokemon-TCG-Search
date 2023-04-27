@@ -60,7 +60,7 @@
 }
 
 /* add button and page buttons */
-.add-btn {
+.btn {
   background-color: #0e3b43;
   color: #f4b266;
   border: none;
@@ -112,15 +112,85 @@ li {
   flex-direction: column;
 }
 
-/* add animations */
-li:active {
-  transform: translate(5px);
+/* style poke info div */
+.poke-info-sheet {
+  align-items: center;
 }
 
-fa-arow-left:active {
+.info-col {
+  padding: 1rem;
+}
+
+.info-header {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.poke-details {
+  flex-wrap: wrap;
+}
+
+@media screen and (min-width: 768px) {
+  .poke-details {
+    flex-wrap: nowrap;
+  }
+}
+
+/* add animations */
+.ham-set:hover,
+.ham-back:hover,
+.btn:hover,
+li:hover,
+.fa-solid:hover {
+  cursor: pointer;
+}
+
+.btn:hover,
+li:hover {
+  transform: translate(3px);
+}
+
+.fa-arrow-left:hover {
   transform: translate(-5px);
 }
 
-fa-arow-right:active {
+.fa-arrow-right:hover {
   transform: translate(5px);
+}
+
+.fa-arrow-left:active,
+.fa-arrow-right:active {
+  transform: translateY(-5px);
+}
+
+/* loading animation */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  height: 100vh;
+  width: 100vh;
+}
+
+.loading {
+  width: 2rem;
+  height: 2rem;
+  border: 5px solid #f3f3f3;
+  border-top: 6px solid #9c41f2;
+  border-radius: 100%;
+  margin: auto;
+  animation: spin 1s infinite linear;
+  position: absolute;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
