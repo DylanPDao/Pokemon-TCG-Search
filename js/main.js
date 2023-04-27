@@ -134,6 +134,7 @@ function renderPokeSearch(pokemon) {
 // make the http request
 function searchPoke(name) {
   const xhr = new XMLHttpRequest();
+  displayLoading();
   const targetUrl = encodeURIComponent('https://api.pokemontcg.io/v2/cards/?q=name:' + name + '*');
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
   xhr.setRequestHeader('X-Api-Key', 'f81270c6-9d17-41a7-90ff-04e77b2b4273');
@@ -146,11 +147,13 @@ function searchPoke(name) {
         const image = renderPokeSearch(data.cardData.data[i].images.large);
         image.setAttribute('data-cardId', data.cardData.data[i].id);
         $pokeSearch.appendChild(image);
+        hideLoading();
       }
     } else {
       for (let i = 0; i < 8; i++) {
         $found[i].src = data.cardData.data[i].images.large;
         $found[i].setAttribute('data-cardId', data.cardData.data[i].id);
+        hideLoading();
       }
     }
   });
@@ -193,6 +196,7 @@ function hideSideMenu() {
 // search by set id
 function searchPokeSet(setId) {
   const xhr = new XMLHttpRequest();
+  displayLoading();
   const targetUrl = encodeURIComponent('https://api.pokemontcg.io/v2/cards/?q=set.id:' + setId);
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
   xhr.setRequestHeader('X-Api-Key', 'f81270c6-9d17-41a7-90ff-04e77b2b4273');
@@ -205,11 +209,13 @@ function searchPokeSet(setId) {
         const image = renderPokeSearch(data.cardData.data[i].images.large);
         image.setAttribute('data-cardId', data.cardData.data[i].id);
         $pokeSearch.appendChild(image);
+        hideLoading();
       }
     } else {
       for (let i = 0; i < 8; i++) {
         $found[i].src = data.cardData.data[i].images.large;
         $found[i].setAttribute('data-cardId', data.cardData.data[i].id);
+        hideLoading();
       }
     }
   });
@@ -337,4 +343,21 @@ function renderPokeInfo(pokemon) {
 
   // return
   return $infoCol;
+}
+
+// loading display
+const $loaderContainer = document.querySelector('.loading-container');
+const $loader = document.querySelector('.loading');
+// show loading
+function displayLoading() {
+  $loaderContainer.classList.remove('hidden');
+  $loader.classList.remove('hidden');
+  setTimeout(() => {
+    $loader.classList.add('hidden');
+  }, 10000);
+}
+// hide loading
+function hideLoading() {
+  $loaderContainer.classList.add('hidden');
+  $loader.classList.add('hidden');
 }
