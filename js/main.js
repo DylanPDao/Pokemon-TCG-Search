@@ -260,10 +260,10 @@ $pokeSearchDiv.addEventListener('click', function (e) {
 
 // pokemon info rendering
 function renderPokeInfo(pokemon) {
-  const $infoRow = document.getElementsByClassName('info-row');
-  if ($infoRow.length !== 0) {
-    while ($infoRow[0]) {
-      $infoRow[0].parentNode.removeChild($infoRow[0]);
+  const $infoColGone = document.getElementsByClassName('info-col');
+  if ($infoColGone.length !== 0) {
+    while ($infoColGone[0]) {
+      $infoColGone[0].parentNode.removeChild($infoColGone[0]);
     }
   }
 

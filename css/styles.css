@@ -172,8 +172,9 @@ li:hover {
   align-items: center;
   margin-left: auto;
   margin-right: auto;
-  height: 100vh;
-  width: 100vh;
+  height: 85%;
+  width: 100%;
+  position: absolute;
 }
 
 .loading {
@@ -200,6 +201,7 @@ li:hover {
 /* poke deck styling */
 .poke-deck {
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .deck-poke-img {
