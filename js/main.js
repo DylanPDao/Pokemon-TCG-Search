@@ -354,6 +354,7 @@ function displayLoading() {
   $loader.classList.remove('hidden');
   setTimeout(() => {
     $loader.classList.add('hidden');
+    $loaderContainer.classList.add('hidden');
   }, 10000);
 }
 // hide loading
