@@ -83,7 +83,7 @@ img {
 }
 
 .found-poke {
-  padding: 1rem;
+  padding: 0.5rem;
 }
 
 /* pokeSearch row styling */
@@ -137,6 +137,14 @@ li {
 }
 
 /* add animations */
+.ham-set,
+.ham-back,
+.btn,
+li,
+.fa-solid {
+  transition: 0.5s;
+}
+
 .ham-set:hover,
 .ham-back:hover,
 .btn:hover,
@@ -159,7 +167,9 @@ li:hover {
 }
 
 .fa-arrow-left:active,
-.fa-arrow-right:active {
+.fa-arrow-right:active,
+.fa-minus:active,
+.fa-plus:active {
   transform: translateY(-5px);
 }
 
@@ -170,15 +180,16 @@ li:hover {
   align-items: center;
   margin-left: auto;
   margin-right: auto;
-  height: 100vh;
-  width: 100vh;
+  height: 85%;
+  width: 100%;
+  position: absolute;
 }
 
 .loading {
   width: 2rem;
   height: 2rem;
   border: 5px solid #f3f3f3;
-  border-top: 6px solid #9c41f2;
+  border-top: 6px solid #4f000b;
   border-radius: 100%;
   margin: auto;
   animation: spin 1s infinite linear;
@@ -193,4 +204,23 @@ li:hover {
   to {
     transform: rotate(360deg);
   }
+}
+
+/* poke deck styling */
+.poke-deck {
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.deck-poke-img {
+  border-radius: 0.25rem;
+}
+
+.column-sixth {
+  padding: 0.5rem;
+}
+
+.poke-deck-row {
+  justify-content: space-around;
+  align-items: center;
 }

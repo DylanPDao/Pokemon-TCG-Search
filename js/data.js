@@ -1,7 +1,7 @@
 /* exported data */
 let data = {
   view: 'poke-search-div',
-  deck: [],
+  deck: {},
   nextEntryId: 1,
   cardData: []
 };

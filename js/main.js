@@ -1,5 +1,6 @@
 // global variable selectors
 const $pokeSearch = document.querySelector('.poke-search');
+const $pokeDeck = document.querySelector('.poke-deck');
 const $pokeSearchDiv = document.querySelector('.poke-search-div');
 const $pokeInfo = document.querySelector('.poke-info');
 const $rightArrow = document.querySelector('.fa-arrow-right');
@@ -85,7 +86,7 @@ $searchBtn.addEventListener('click', function (e) {
   viewSwap('poke-search-div');
 });
 $deckBtn.addEventListener('click', function (e) {
-  viewSwap('poke-deck');
+  viewSwap('poke-deck-div');
 });
 
 // arrows can move forward or backwards for searched cards;
@@ -131,7 +132,7 @@ function renderPokeSearch(pokemon) {
   return $img;
 }
 
-// make the http request
+// make the http request after hitting enter on search bar
 function searchPoke(name) {
   const xhr = new XMLHttpRequest();
   displayLoading();
@@ -187,10 +188,10 @@ $back.addEventListener('click', function (e) {
     $setImg[i].classList.add('hidden');
   }
 });
-
 // hide side menu
 function hideSideMenu() {
   $hamMenu.classList.add('hidden');
+
 }
 
 // search by set id
@@ -259,10 +260,10 @@ $pokeSearchDiv.addEventListener('click', function (e) {
 
 // pokemon info rendering
 function renderPokeInfo(pokemon) {
-  const $infoRow = document.getElementsByClassName('info-row');
-  if ($infoRow.length !== 0) {
-    while ($infoRow[0]) {
-      $infoRow[0].parentNode.removeChild($infoRow[0]);
+  const $infoColGone = document.getElementsByClassName('info-col');
+  if ($infoColGone.length !== 0) {
+    while ($infoColGone[0]) {
+      $infoColGone[0].parentNode.removeChild($infoColGone[0]);
     }
   }
 
@@ -352,12 +353,70 @@ const $loader = document.querySelector('.loading');
 function displayLoading() {
   $loaderContainer.classList.remove('hidden');
   $loader.classList.remove('hidden');
-  setTimeout(() => {
-    $loader.classList.add('hidden');
-  }, 10000);
 }
 // hide loading
 function hideLoading() {
   $loaderContainer.classList.add('hidden');
   $loader.classList.add('hidden');
 }
+
+// render searched pokemon for deck view
+function renderPokeDeckCard(pokemon) {
+  // create col
+  const $col = document.createElement('div');
+  $col.className = 'column-sixth';
+
+  // create poke img
+  const $image = renderPokeSearch(pokemon.data.images.large);
+  $image.setAttribute('data-cardId', pokemon.data.id);
+  $image.className = 'column-100 deck-poke-img';
+  const $row = document.createElement('div');
+  $row.className = 'row poke-deck-row';
+  $row.appendChild($image);
+  $col.appendChild($row);
+
+  // create ui
+  const $row2 = document.createElement('div');
+  $row2.className = 'row poke-deck-row';
+  const $minus = document.createElement('i');
+  $minus.className = 'fa-solid fa-minus';
+  const $count = document.createElement('p');
+  $count.className = 'deck-count';
+  const $plus = document.createElement('i');
+  $plus.className = 'fa-solid fa-plus';
+  $row2.appendChild($minus);
+  $row2.appendChild($count);
+  $row2.appendChild($plus);
+  $col.appendChild($row2);
+
+  return $col;
+}
+
+// search pokemon by id
+function deckPoke(id) {
+  const xhr = new XMLHttpRequest();
+  displayLoading();
+  const targetUrl = encodeURIComponent('https://api.pokemontcg.io/v2/cards/' + id);
+  xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
+  xhr.setRequestHeader('X-Api-Key', 'f81270c6-9d17-41a7-90ff-04e77b2b4273');
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function () {
+    const pokemon = xhr.response;
+    const $col = renderPokeDeckCard(pokemon);
+    $pokeDeck.appendChild($col);
+    const $deckCount = document.querySelector('.deck-count');
+    $deckCount.textContent = data.deck[id];
+    $deckCount.classList.add(id);
+    hideLoading();
+  });
+  xhr.send();
+}
+
+// add button functionality
+$addBtn.addEventListener('click', function (e) {
+  const $viewPoke = document.querySelector('.view-poke');
+  const $cardId = $viewPoke.dataset.cardid;
+  data.deck[$cardId] = 1;
+  deckPoke($cardId);
+  viewSwap('poke-deck-div');
+});
