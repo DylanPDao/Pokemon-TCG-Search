@@ -383,18 +383,18 @@ function deckPoke(id) {
     $image.setAttribute('data-cardId', pokeData.data.id);
     $image.className = 'column-100 deck-poke-img';
     const $row = document.createElement('div');
-    $row.className = 'row';
+    $row.className = 'row poke-deck-row';
     $row.appendChild($image);
     $col.appendChild($row);
 
     // create ui
     const $row2 = document.createElement('div');
-    $row2.className = 'row';
+    $row2.className = 'row poke-deck-row';
     const $minus = document.createElement('i');
     $minus.className = 'fa-solid fa-minus';
     const $count = document.createElement('p');
     $count.className = 'deck-count';
-    $count.textContent = data.deck.id;
+    $count.textContent = data.deck[id];
     const $plus = document.createElement('i');
     $plus.className = 'fa-solid fa-plus';
     $row2.appendChild($minus);
@@ -414,5 +414,5 @@ $addBtn.addEventListener('click', function (e) {
   const $cardId = $viewPoke.dataset.cardid;
   data.deck[$cardId] = 1;
   deckPoke($cardId);
-  viewSwap('poke-search-div');
+  viewSwap('poke-deck-div');
 });

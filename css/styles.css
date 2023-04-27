@@ -159,7 +159,9 @@ li:hover {
 }
 
 .fa-arrow-left:active,
-.fa-arrow-right:active {
+.fa-arrow-right:active,
+.fa-minus:active,
+.fa-plus:active {
   transform: translateY(-5px);
 }
 
@@ -193,4 +195,22 @@ li:hover {
   to {
     transform: rotate(360deg);
   }
+}
+
+/* poke deck styling */
+.poke-deck {
+  align-items: center;
+}
+
+.deck-poke-img {
+  border-radius: 0.25rem;
+}
+
+.column-sixth {
+  padding: 0.5rem;
+}
+
+.poke-deck-row {
+  justify-content: space-around;
+  align-items: center;
 }
