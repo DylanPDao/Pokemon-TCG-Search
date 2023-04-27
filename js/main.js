@@ -230,13 +230,22 @@ $pokeSearchDiv.addEventListener('click', function (e) {
   if (e.target.classList.contains('found-poke')) {
     for (let i = 0; i < data.cardData.data.length; i++) {
       if (e.target.dataset.cardid === data.cardData.data[i].id) {
-        const image = renderPokeSearch(data.cardData.data[i].images.large);
-        image.setAttribute('data-cardId', data.cardData.data[i].id);
-        image.className = 'column-100 view-poke';
-        $pokeView.appendChild(image);
-        viewSwap('poke-details');
-        const pokeInfo = renderPokeInfo(data.cardData.data[i]);
-        $pokeInfo.appendChild(pokeInfo);
+        const $viewPoke = document.querySelectorAll('.view-poke');
+        if ($viewPoke.length === 0) {
+          const image = renderPokeSearch(data.cardData.data[i].images.large);
+          image.setAttribute('data-cardId', data.cardData.data[i].id);
+          image.className = 'column-100 view-poke';
+          $pokeView.appendChild(image);
+          viewSwap('poke-details');
+          const pokeInfo = renderPokeInfo(data.cardData.data[i]);
+          $pokeInfo.appendChild(pokeInfo);
+        } else {
+          $viewPoke[0].src = data.cardData.data[i].images.large;
+          $viewPoke[0].dataset.cardid = data.cardData.data[i].id;
+          viewSwap('poke-details');
+          const pokeInfo = renderPokeInfo(data.cardData.data[i]);
+          $pokeInfo.appendChild(pokeInfo);
+        }
       }
     }
   }
@@ -244,6 +253,13 @@ $pokeSearchDiv.addEventListener('click', function (e) {
 
 // pokemon info rendering
 function renderPokeInfo(pokemon) {
+  const $infoRow = document.getElementsByClassName('info-row');
+  if ($infoRow.length !== 0) {
+    while ($infoRow[0]) {
+      $infoRow[0].parentNode.removeChild($infoRow[0]);
+    }
+  }
+
   const $infoCol = document.createElement('div');
   $infoCol.className = 'column-100 info-col';
 
