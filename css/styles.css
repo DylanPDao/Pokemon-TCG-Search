@@ -137,6 +137,14 @@ li {
 }
 
 /* add animations */
+.ham-set,
+.ham-back,
+.btn,
+li,
+.fa-solid {
+  transition: 0.5s;
+}
+
 .ham-set:hover,
 .ham-back:hover,
 .btn:hover,
