@@ -1,6 +1,7 @@
 // global variable selectors
 const $pokeSearch = document.querySelector('.poke-search');
 const $pokeSearchDiv = document.querySelector('.poke-search-div');
+const $pokeInfo = document.querySelector('.poke-info');
 const $rightArrow = document.querySelector('.fa-arrow-right');
 const $searchBtn = document.querySelector('.search-btn');
 const $deckBtn = document.querySelector('.deck-btn');
@@ -133,7 +134,7 @@ function renderPokeSearch(pokemon) {
 // make the http request
 function searchPoke(name) {
   const xhr = new XMLHttpRequest();
-  const targetUrl = encodeURIComponent('https://api.pokemontcg.io/v2/cards/?q=name:' + name + '*&pageSize=32');
+  const targetUrl = encodeURIComponent('https://api.pokemontcg.io/v2/cards/?q=name:' + name + '*');
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
   xhr.setRequestHeader('X-Api-Key', 'f81270c6-9d17-41a7-90ff-04e77b2b4273');
   xhr.responseType = 'json';
@@ -164,6 +165,7 @@ $form.addEventListener('submit', function (e) {
   viewSwap('poke-search-div');
   uiControlSwap('search');
   $searchBar.blur();
+  $searchBar.value = '';
 });
 
 // side bar menu functionality
@@ -191,7 +193,7 @@ function hideSideMenu() {
 // search by set id
 function searchPokeSet(setId) {
   const xhr = new XMLHttpRequest();
-  const targetUrl = encodeURIComponent('https://api.pokemontcg.io/v2/cards/?q=set.id:' + setId + '&pageSize=32');
+  const targetUrl = encodeURIComponent('https://api.pokemontcg.io/v2/cards/?q=set.id:' + setId);
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
   xhr.setRequestHeader('X-Api-Key', 'f81270c6-9d17-41a7-90ff-04e77b2b4273');
   xhr.responseType = 'json';
@@ -233,7 +235,90 @@ $pokeSearchDiv.addEventListener('click', function (e) {
         image.className = 'column-100 view-poke';
         $pokeView.appendChild(image);
         viewSwap('poke-details');
+        const pokeInfo = renderPokeInfo(data.cardData.data[i]);
+        $pokeInfo.appendChild(pokeInfo);
       }
     }
   }
 });
+
+// pokemon info rendering
+function renderPokeInfo(pokemon) {
+  const $infoCol = document.createElement('div');
+  $infoCol.className = 'column-100 info-col';
+
+  // name
+  const $row1 = document.createElement('div');
+  $row1.className = 'row info-row';
+  const $column1 = document.createElement('div');
+  $column1.className = 'column-100 poke-info-sheet';
+  const $name = document.createElement('p');
+  $name.textContent = pokemon.name;
+  $name.className = 'info-header';
+  $row1.appendChild($column1);
+  $column1.append($name);
+  $infoCol.appendChild($row1);
+
+  // card id/ set id
+  const $row2 = document.createElement('div');
+  $row2.className = ('row info-row');
+  const $row3 = document.createElement('div');
+  $row3.className = ('row info-row');
+  const $column2 = document.createElement('div');
+  $column2.className = ('column-100 poke-info-sheet');
+  const $column3 = document.createElement('div');
+  $column3.className = ('column-100 poke-info-sheet');
+  const $set = document.createElement('p');
+  $set.className = 'info-text';
+  $set.textContent = `Set / Set ID: ${pokemon.set.name} / ${pokemon.set.id}`;
+  const $idRelease = document.createElement('p');
+  $idRelease.textContent = `Card ID / Release: ${pokemon.id} / ${pokemon.set.releaseDate}`;
+  $idRelease.className = 'info-text';
+  $row2.appendChild($column2);
+  $row3.appendChild($column3);
+  $column2.appendChild($idRelease);
+  $column3.appendChild($set);
+  $infoCol.appendChild($row2);
+  $infoCol.appendChild($row3);
+
+  // legality
+  const $row4 = document.createElement('div');
+  $row4.className = ('row info-row');
+  const $column4 = document.createElement('div');
+  $column4.className = 'column-100 poke-info-sheet';
+  const $legality = document.createElement('p');
+  $legality.textContent = 'Legality';
+  $legality.className = 'info-header';
+  $row4.appendChild($column4);
+  $column4.appendChild($legality);
+  $infoCol.appendChild($row4);
+
+  const objLength = Object.keys(pokemon.legalities).length;
+  const objKeys = Object.keys(pokemon.legalities);
+  for (let i = 0; i < objLength; i++) {
+    const $row = document.createElement('div');
+    $row.className = ('row info-row');
+    const $column = document.createElement('div');
+    $column.className = 'column-100 poke-info-sheet';
+    const $legality = document.createElement('p');
+    $legality.textContent = `${objKeys[i]}: ${pokemon.legalities[objKeys[i]]}`;
+    $row.appendChild($column);
+    $column.appendChild($legality);
+    $infoCol.appendChild($row);
+  }
+
+  // price
+  const $row5 = document.createElement('div');
+  $row5.className = ('row info-row');
+  const $column5 = document.createElement('div');
+  $column5.className = 'column-100 poke-info-sheet';
+  const $price = document.createElement('p');
+  $price.textContent = `Average Price: $${pokemon.cardmarket.prices.averageSellPrice}`;
+  $price.className = 'info-text';
+  $row5.appendChild($column5);
+  $column5.appendChild($price);
+  $infoCol.appendChild($row5);
+
+  // return
+  return $infoCol;
+}

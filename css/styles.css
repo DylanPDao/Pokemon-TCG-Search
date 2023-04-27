@@ -122,5 +122,29 @@ fa-arow-left:active {
 }
 
 fa-arow-right:active {
-  transform: translate(5px);
+  transform: translate(10px);
+}
+
+/* style poke info div */
+.poke-info-sheet {
+  align-items: center;
+}
+
+.info-col {
+  padding: 1rem;
+}
+
+.info-header {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.poke-details {
+  flex-wrap: wrap;
+}
+
+@media screen and (min-width: 768px) {
+  .poke-details {
+    flex-wrap: nowrap;
+  }
 }
