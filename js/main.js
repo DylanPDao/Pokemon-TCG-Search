@@ -381,7 +381,7 @@ function renderPokeDeckCard(pokemon) {
   const $minus = document.createElement('i');
   $minus.className = 'fa-solid fa-minus';
   const $count = document.createElement('p');
-  $count.className = 'deck-count';
+  $count.className = 'deck-count' + pokemon.data.id;
   const $plus = document.createElement('i');
   $plus.className = 'fa-solid fa-plus';
   $row2.appendChild($minus);
@@ -404,9 +404,8 @@ function deckPoke(id) {
     const pokemon = xhr.response;
     const $col = renderPokeDeckCard(pokemon);
     $pokeDeck.appendChild($col);
-    const $deckCount = document.querySelector('.deck-count');
+    const $deckCount = document.querySelector('.deck-count' + id);
     $deckCount.textContent = data.deck[id];
-    $deckCount.dataset.cardid = id;
     hideLoading();
   });
   xhr.send();
