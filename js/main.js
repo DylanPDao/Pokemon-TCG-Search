@@ -406,7 +406,7 @@ function deckPoke(id) {
     $pokeDeck.appendChild($col);
     const $deckCount = document.querySelector('.deck-count');
     $deckCount.textContent = data.deck[id];
-    $deckCount.classList.add(id);
+    $deckCount.dataset.cardid = id;
     hideLoading();
   });
   xhr.send();
@@ -418,5 +418,13 @@ $addBtn.addEventListener('click', function (e) {
   const $cardId = $viewPoke.dataset.cardid;
   data.deck[$cardId] = 1;
   deckPoke($cardId);
+  viewSwap('poke-deck-div');
+});
+
+window.addEventListener('load', function (e) {
+  const keys = Object.keys(data.deck);
+  for (let i = 0; i < keys.length; i++) {
+    deckPoke(keys[i]);
+  }
   viewSwap('poke-deck-div');
 });
