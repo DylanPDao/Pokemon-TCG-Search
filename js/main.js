@@ -1,19 +1,26 @@
 // global variable selectors
+// main divs
 const $pokeSearch = document.querySelector('.poke-search');
-const $pokeDeck = document.querySelector('.poke-deck');
 const $pokeSearchDiv = document.querySelector('.poke-search-div');
+const $searchBarRow = document.querySelector('.search-row');
+
+// info blocks
+const $pokeDeck = document.querySelector('.poke-deck');
 const $pokeInfo = document.querySelector('.poke-info');
-const $rightArrow = document.querySelector('.fa-arrow-right');
+const $pokeView = document.querySelector('.poke-view');
+
+// search button
+const $searchBar = document.querySelector('.search-bar');
 const $searchBtn = document.querySelector('.search-btn');
+const $form = document.querySelector('form');
+
+// ui controls
+const $rightArrow = document.querySelector('.fa-arrow-right');
 const $deckBtn = document.querySelector('.deck-btn');
 const $viewBtn = document.querySelector('.view-btn');
 const $addBtn = document.querySelector('.add-btn');
 const $leftArrow = document.querySelector('.fa-arrow-left');
-const $form = document.querySelector('form');
 const $questionMark = document.querySelector('.fa-magnifying-glass');
-const $searchBar = document.querySelector('.search-bar');
-const $searchBarRow = document.querySelector('.search-row');
-const $pokeView = document.querySelector('.poke-view');
 const $ham = document.querySelector('.fa-bars');
 const $hamMenu = document.querySelector('.ham-menu');
 const $hamSet = document.querySelector('.ham-set');
@@ -22,8 +29,12 @@ const $back = document.querySelector('.ham-back');
 const $ul = document.querySelector('ul');
 const $main = document.querySelectorAll('.main2');
 const $setImg = document.querySelectorAll('.set-img');
-let pokeCount = 8;
+// const $plus = document.querySelector('.fa-plus');
+// const $minus = document.querySelector('.fa-minus');
+
+// search scrolling
 let pokeIndex = 8;
+let pokeCount = 8;
 
 // search bar focus in and out
 $questionMark.addEventListener('click', function (e) {
@@ -381,7 +392,8 @@ function renderPokeDeckCard(pokemon) {
   const $minus = document.createElement('i');
   $minus.className = 'fa-solid fa-minus';
   const $count = document.createElement('p');
-  $count.className = 'deck-count' + pokemon.data.id;
+  $count.className = 'deck-count';
+  $count.id = pokemon.data.id;
   const $plus = document.createElement('i');
   $plus.className = 'fa-solid fa-plus';
   $row2.appendChild($minus);
@@ -404,7 +416,7 @@ function deckPoke(id) {
     const pokemon = xhr.response;
     const $col = renderPokeDeckCard(pokemon);
     $pokeDeck.appendChild($col);
-    const $deckCount = document.querySelector('.deck-count' + id);
+    const $deckCount = document.getElementById(id);
     $deckCount.textContent = data.deck[id];
     hideLoading();
   });
