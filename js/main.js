@@ -422,8 +422,15 @@ $addBtn.addEventListener('click', function (e) {
 
 window.addEventListener('load', function (e) {
   const keys = Object.keys(data.deck);
-  for (let i = 0; i < keys.length; i++) {
-    deckPoke(keys[i]);
+  if (keys.length > 0) {
+    const keys = Object.keys(data.deck);
+    for (let i = 0; i < keys.length; i++) {
+      deckPoke(keys[i]);
+    }
+    viewSwap('poke-deck-div');
   }
-  viewSwap('poke-deck-div');
+  if (data.cardData.length > 0 && keys.length === 0) {
+    searchPoke(data.cardData.data);
+    viewSwap('poke-search-div');
+  }
 });

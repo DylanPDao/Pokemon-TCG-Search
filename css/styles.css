@@ -1,3 +1,13 @@
+/* styling intro screen */
+.poke-main-div {
+  justify-content: center;
+  align-items: center;
+}
+
+.oak {
+  margin-bottom: 1rem;
+}
+
 /* sizing the boxes for conent */
 .main-row {
   justify-content: center;
