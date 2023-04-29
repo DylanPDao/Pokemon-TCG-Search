@@ -29,8 +29,6 @@ const $back = document.querySelector('.ham-back');
 const $ul = document.querySelector('ul');
 const $main = document.querySelectorAll('.main2');
 const $setImg = document.querySelectorAll('.set-img');
-// const $plus = document.querySelector('.fa-plus');
-// const $minus = document.querySelector('.fa-minus');
 
 // search scrolling
 let pokeIndex = 8;
@@ -391,11 +389,12 @@ function renderPokeDeckCard(pokemon) {
   $row2.className = 'row poke-deck-row';
   const $minus = document.createElement('i');
   $minus.className = 'fa-solid fa-minus';
+  $minus.dataset.cardid = pokemon.data.id;
   const $count = document.createElement('p');
-  $count.className = 'deck-count';
   $count.id = pokemon.data.id;
   const $plus = document.createElement('i');
   $plus.className = 'fa-solid fa-plus';
+  $plus.dataset.cardid = pokemon.data.id;
   $row2.appendChild($minus);
   $row2.appendChild($count);
   $row2.appendChild($plus);
@@ -444,5 +443,33 @@ window.addEventListener('load', function (e) {
   if (data.cardData.length > 0 && keys.length === 0) {
     searchPoke(data.cardData.data);
     viewSwap('poke-search-div');
+  }
+});
+
+$pokeDeck.addEventListener('click', e => {
+  const $plus = document.querySelector('.fa-plus');
+  const $minus = document.querySelector('.fa-minus');
+
+  if (e.target === $plus) {
+    const cardId = e.target.dataset.cardid;
+    const $deckCount = document.getElementById(e.target.dataset.cardid);
+    if (Number($deckCount.textContent) <= 3) {
+      $deckCount.textContent = Number($deckCount.textContent) + 1;
+      data.deck[cardId] = $deckCount.textContent;
+    } else {
+      return;
+    }
+  }
+  if (e.target === $minus) {
+    const cardId = e.target.dataset.cardid;
+    const $deckCount = document.getElementById(e.target.dataset.cardid);
+    if (Number($deckCount.textContent) > 1) {
+      $deckCount.textContent = Number($deckCount.textContent) - 1;
+      data.deck[cardId] = $deckCount.textContent;
+    } else {
+      delete data.deck[cardId];
+      const $col = $deckCount.closest('.column-sixth');
+      $col.remove();
+    }
   }
 });
