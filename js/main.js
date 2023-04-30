@@ -458,11 +458,10 @@ window.addEventListener('load', function (e) {
 });
 
 $pokeDeck.addEventListener('click', e => {
-  const $plus = document.querySelector('.fa-plus');
-  const $minus = document.querySelector('.fa-minus');
+  const cardId = e.target.dataset.cardid;
+  const targetClassList = e.target.classList;
 
-  if (e.target === $plus) {
-    const cardId = e.target.dataset.cardid;
+  if (targetClassList.contains('fa-plus') === true) {
     const $deckCount = document.getElementById(e.target.dataset.cardid);
     if (Number($deckCount.textContent) <= 3) {
       $deckCount.textContent = Number($deckCount.textContent) + 1;
@@ -471,8 +470,8 @@ $pokeDeck.addEventListener('click', e => {
       return;
     }
   }
-  if (e.target === $minus) {
-    const cardId = e.target.dataset.cardid;
+
+  if (targetClassList.contains('fa-minus') === true) {
     const $deckCount = document.getElementById(e.target.dataset.cardid);
     if (Number($deckCount.textContent) > 1) {
       $deckCount.textContent = Number($deckCount.textContent) - 1;
