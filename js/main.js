@@ -15,10 +15,15 @@ const $searchBtn = document.querySelector('.search-btn');
 const $form = document.querySelector('form');
 
 // ui controls
-const $rightArrow = document.querySelector('.fa-arrow-right');
 const $deckBtn = document.querySelector('.deck-btn');
-const $viewBtn = document.querySelector('.view-btn');
 const $addBtn = document.querySelector('.add-btn');
+const $viewBtn = document.querySelector('.view-btn');
+const $deckViewCount = document.querySelector('.cards-in-deck-div');
+const $deckViewCountText = document.querySelector('.cards-in-deck');
+const $deckPriceBtn = document.querySelector('.deck-price-btn');
+const $deckPrice = document.querySelector('.cards-total-div');
+const $deckPriceText = document.querySelector('.cards-total');
+const $rightArrow = document.querySelector('.fa-arrow-right');
 const $leftArrow = document.querySelector('.fa-arrow-left');
 const $questionMark = document.querySelector('.fa-magnifying-glass');
 const $ham = document.querySelector('.fa-bars');
@@ -71,6 +76,9 @@ function uiControlSwap(view) {
     $deckBtn.classList.remove('hidden');
     $searchBtn.classList.add('hidden');
     $addBtn.classList.add('hidden');
+    $deckPrice.classList.add('hidden');
+    $deckViewCount.classList.add('hidden');
+    $deckPriceBtn.classList.add('hidden');
   } else if (view === 'details') {
     $viewBtn.classList.add('hidden');
     $rightArrow.classList.add('hidden');
@@ -78,6 +86,9 @@ function uiControlSwap(view) {
     $deckBtn.classList.remove('hidden');
     $searchBtn.classList.remove('hidden');
     $addBtn.classList.remove('hidden');
+    $deckPrice.classList.add('hidden');
+    $deckViewCount.classList.add('hidden');
+    $deckPriceBtn.classList.add('hidden');
   } else {
     $viewBtn.classList.remove('hidden');
     $searchBtn.classList.remove('hidden');
@@ -85,6 +96,9 @@ function uiControlSwap(view) {
     $leftArrow.classList.add('hidden');
     $deckBtn.classList.add('hidden');
     $addBtn.classList.add('hidden');
+    $deckPrice.classList.add('hidden');
+    $deckViewCount.classList.remove('hidden');
+    $deckPriceBtn.classList.remove('hidden');
   }
 }
 // ui functionality
@@ -431,17 +445,22 @@ $addBtn.addEventListener('click', function (e) {
     data.deck[$cardId] = 1;
     deckPoke($cardId);
     viewSwap('poke-deck-div');
+    getCardsInDeck();
+    getDeckTotal();
   } else {
     const $deckCount = document.getElementById($cardId);
     if (Number($deckCount.textContent) <= 3) {
       $deckCount.textContent = Number($deckCount.textContent) + 1;
       data.deck[$cardId] = $deckCount.textContent;
       viewSwap('poke-deck-div');
+      getCardsInDeck();
+      getDeckTotal();
     }
   }
   viewSwap('poke-deck-div');
 });
 
+// on load, brings back previously used info
 window.addEventListener('load', function (e) {
   const keys = Object.keys(data.deck);
   if (keys.length > 0) {
@@ -449,14 +468,17 @@ window.addEventListener('load', function (e) {
     for (let i = 0; i < keys.length; i++) {
       deckPoke(keys[i]);
     }
+    getCardsInDeck();
     viewSwap('poke-deck-div');
   }
   if (data.cardData.length > 0 && keys.length === 0) {
     searchPoke(data.cardData.data);
+    getCardsInDeck();
     viewSwap('poke-search-div');
   }
 });
 
+// minus and plus icon on deck view functionality
 $pokeDeck.addEventListener('click', e => {
   const cardId = e.target.dataset.cardid;
   const targetClassList = e.target.classList;
@@ -469,6 +491,8 @@ $pokeDeck.addEventListener('click', e => {
     } else {
       return;
     }
+    getDeckTotal();
+    getCardsInDeck();
   }
 
   if (targetClassList.contains('fa-minus') === true) {
@@ -481,5 +505,44 @@ $pokeDeck.addEventListener('click', e => {
       const $col = $deckCount.closest('.column-sixth');
       $col.remove();
     }
+    getDeckTotal();
+    getCardsInDeck();
   }
+});
+
+// get deck count and update deck count function
+function getCardsInDeck() {
+  let deckCardCount = 0;
+  for (const key in data.deck) {
+    deckCardCount += Number(data.deck[key]);
+  }
+  $deckViewCountText.textContent = `Cards in Deck: ${deckCardCount}`;
+}
+
+// get deck price
+function getDeckTotal() {
+  const deckKeys = Object.keys(data.deck);
+  let deckPrice = 0;
+  for (let i = 0; i < deckKeys.length; i++) {
+    const xhr = new XMLHttpRequest();
+    displayLoading();
+    const targetUrl = encodeURIComponent('https://api.pokemontcg.io/v2/cards/' + deckKeys[i]);
+    xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
+    xhr.setRequestHeader('X-Api-Key', 'f81270c6-9d17-41a7-90ff-04e77b2b4273');
+    xhr.responseType = 'json';
+    xhr.addEventListener('load', function () {
+      const pokemon = xhr.response;
+      const key = deckKeys[i];
+      const price = pokemon.data.cardmarket.prices.avg30 * data.deck[key];
+      deckPrice = deckPrice + price;
+      hideLoading();
+      $deckPriceText.textContent = `Deck Total: $${Math.round(deckPrice)}`;
+    });
+    xhr.send();
+  }
+  $deckPrice.classList.remove('hidden');
+}
+
+$deckPriceBtn.addEventListener('click', function (e) {
+  getDeckTotal();
 });
