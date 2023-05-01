@@ -22,7 +22,7 @@ const $deckViewCount = document.querySelector('.cards-in-deck-div');
 const $deckViewCountText = document.querySelector('.cards-in-deck');
 const $deckPriceBtn = document.querySelector('.deck-price-btn');
 const $deckPrice = document.querySelector('.cards-total-div');
-
+const $deckPriceText = document.querySelector('.cards-total');
 const $rightArrow = document.querySelector('.fa-arrow-right');
 const $leftArrow = document.querySelector('.fa-arrow-left');
 const $questionMark = document.querySelector('.fa-magnifying-glass');
@@ -516,7 +516,6 @@ function getCardsInDeck() {
 }
 
 // get deck price
-const $deckPriceText = document.querySelector('.cards-total');
 $deckPriceBtn.addEventListener('click', function (e) {
   const deckKeys = Object.keys(data.deck);
   let deckPrice = 0;
