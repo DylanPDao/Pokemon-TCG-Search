@@ -444,17 +444,17 @@ $addBtn.addEventListener('click', function (e) {
   if (keys.includes($cardId) === false) {
     data.deck[$cardId] = 1;
     deckPoke($cardId);
+    viewSwap('poke-deck-div');
     getCardsInDeck();
     getDeckTotal();
-    viewSwap('poke-deck-div');
   } else {
     const $deckCount = document.getElementById($cardId);
     if (Number($deckCount.textContent) <= 3) {
       $deckCount.textContent = Number($deckCount.textContent) + 1;
       data.deck[$cardId] = $deckCount.textContent;
+      viewSwap('poke-deck-div');
       getCardsInDeck();
       getDeckTotal();
-      viewSwap('poke-deck-div');
     }
   }
   viewSwap('poke-deck-div');

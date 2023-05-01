@@ -205,6 +205,14 @@ li {
   padding-top: 1rem;
   align-items: center;
   max-height: 1rem;
+  align-self: center;
+}
+
+@media screen and (min-width: 768px) {
+  .cards-in-deck-div,
+  .cards-total-div {
+    align-self: flex-start;
+  }
 }
 
 /* add animations */
