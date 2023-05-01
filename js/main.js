@@ -516,7 +516,7 @@ function getCardsInDeck() {
 }
 
 // get deck price
-$deckPriceBtn.addEventListener('click', function (e) {
+function getDeckTotal() {
   const deckKeys = Object.keys(data.deck);
   let deckPrice = 0;
   for (let i = 0; i < deckKeys.length; i++) {
@@ -528,7 +528,8 @@ $deckPriceBtn.addEventListener('click', function (e) {
     xhr.responseType = 'json';
     xhr.addEventListener('load', function () {
       const pokemon = xhr.response;
-      const price = pokemon.data.cardmarket.prices.avg30;
+      const key = deckKeys[i];
+      const price = pokemon.data.cardmarket.prices.avg30 * data.deck[key];
       deckPrice = deckPrice + price;
       hideLoading();
       $deckPriceText.textContent = `Deck Total: $${Math.round(deckPrice)}`;
@@ -536,4 +537,8 @@ $deckPriceBtn.addEventListener('click', function (e) {
     xhr.send();
   }
   $deckPrice.classList.remove('hidden');
+}
+
+$deckPriceBtn.addEventListener('click', function (e) {
+  getDeckTotal();
 });
