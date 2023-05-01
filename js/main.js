@@ -20,7 +20,9 @@ const $addBtn = document.querySelector('.add-btn');
 const $viewBtn = document.querySelector('.view-btn');
 const $deckViewCount = document.querySelector('.cards-in-deck-div');
 const $deckViewCountText = document.querySelector('.cards-in-deck');
+const $deckPriceBtn = document.querySelector('.deck-price-btn');
 const $deckPrice = document.querySelector('.cards-total-div');
+
 const $rightArrow = document.querySelector('.fa-arrow-right');
 const $leftArrow = document.querySelector('.fa-arrow-left');
 const $questionMark = document.querySelector('.fa-magnifying-glass');
@@ -76,6 +78,7 @@ function uiControlSwap(view) {
     $addBtn.classList.add('hidden');
     $deckPrice.classList.add('hidden');
     $deckViewCount.classList.add('hidden');
+    $deckPriceBtn.classList.add('hidden');
   } else if (view === 'details') {
     $viewBtn.classList.add('hidden');
     $rightArrow.classList.add('hidden');
@@ -85,7 +88,7 @@ function uiControlSwap(view) {
     $addBtn.classList.remove('hidden');
     $deckPrice.classList.add('hidden');
     $deckViewCount.classList.add('hidden');
-
+    $deckPriceBtn.classList.add('hidden');
   } else {
     $viewBtn.classList.remove('hidden');
     $searchBtn.classList.remove('hidden');
@@ -93,8 +96,9 @@ function uiControlSwap(view) {
     $leftArrow.classList.add('hidden');
     $deckBtn.classList.add('hidden');
     $addBtn.classList.add('hidden');
-    $deckPrice.classList.remove('hidden');
+    $deckPrice.classList.add('hidden');
     $deckViewCount.classList.remove('hidden');
+    $deckPriceBtn.classList.remove('hidden');
   }
 }
 // ui functionality
@@ -503,7 +507,6 @@ $pokeDeck.addEventListener('click', e => {
 });
 
 // get deck count and update deck count function
-// const $deckPriceText = document.querySelector('.cards-total');
 function getCardsInDeck() {
   let deckCardCount = 0;
   for (const key in data.deck) {
@@ -511,3 +514,27 @@ function getCardsInDeck() {
   }
   $deckViewCountText.textContent = `Cards in Deck: ${deckCardCount}`;
 }
+
+// get deck price
+const $deckPriceText = document.querySelector('.cards-total');
+$deckPriceBtn.addEventListener('click', function (e) {
+  const deckKeys = Object.keys(data.deck);
+  let deckPrice = 0;
+  for (let i = 0; i < deckKeys.length; i++) {
+    const xhr = new XMLHttpRequest();
+    displayLoading();
+    const targetUrl = encodeURIComponent('https://api.pokemontcg.io/v2/cards/' + deckKeys[i]);
+    xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
+    xhr.setRequestHeader('X-Api-Key', 'f81270c6-9d17-41a7-90ff-04e77b2b4273');
+    xhr.responseType = 'json';
+    xhr.addEventListener('load', function () {
+      const pokemon = xhr.response;
+      const price = pokemon.data.cardmarket.prices.avg30;
+      deckPrice = deckPrice + price;
+      hideLoading();
+      $deckPriceText.textContent = `Deck Total: $${Math.round(deckPrice)}`;
+    });
+    xhr.send();
+  }
+  $deckPrice.classList.remove('hidden');
+});
