@@ -1,19 +1,26 @@
 // global variable selectors
+// main divs
 const $pokeSearch = document.querySelector('.poke-search');
-const $pokeDeck = document.querySelector('.poke-deck');
 const $pokeSearchDiv = document.querySelector('.poke-search-div');
+const $searchBarRow = document.querySelector('.search-row');
+
+// info blocks
+const $pokeDeck = document.querySelector('.poke-deck');
 const $pokeInfo = document.querySelector('.poke-info');
-const $rightArrow = document.querySelector('.fa-arrow-right');
+const $pokeView = document.querySelector('.poke-view');
+
+// search button
+const $searchBar = document.querySelector('.search-bar');
 const $searchBtn = document.querySelector('.search-btn');
+const $form = document.querySelector('form');
+
+// ui controls
+const $rightArrow = document.querySelector('.fa-arrow-right');
 const $deckBtn = document.querySelector('.deck-btn');
 const $viewBtn = document.querySelector('.view-btn');
 const $addBtn = document.querySelector('.add-btn');
 const $leftArrow = document.querySelector('.fa-arrow-left');
-const $form = document.querySelector('form');
 const $questionMark = document.querySelector('.fa-magnifying-glass');
-const $searchBar = document.querySelector('.search-bar');
-const $searchBarRow = document.querySelector('.search-row');
-const $pokeView = document.querySelector('.poke-view');
 const $ham = document.querySelector('.fa-bars');
 const $hamMenu = document.querySelector('.ham-menu');
 const $hamSet = document.querySelector('.ham-set');
@@ -22,8 +29,10 @@ const $back = document.querySelector('.ham-back');
 const $ul = document.querySelector('ul');
 const $main = document.querySelectorAll('.main2');
 const $setImg = document.querySelectorAll('.set-img');
-let pokeCount = 8;
+
+// search scrolling
 let pokeIndex = 8;
+let pokeCount = 8;
 
 // search bar focus in and out
 $questionMark.addEventListener('click', function (e) {
@@ -380,10 +389,12 @@ function renderPokeDeckCard(pokemon) {
   $row2.className = 'row poke-deck-row';
   const $minus = document.createElement('i');
   $minus.className = 'fa-solid fa-minus';
+  $minus.dataset.cardid = pokemon.data.id;
   const $count = document.createElement('p');
-  $count.className = 'deck-count';
+  $count.id = pokemon.data.id;
   const $plus = document.createElement('i');
   $plus.className = 'fa-solid fa-plus';
+  $plus.dataset.cardid = pokemon.data.id;
   $row2.appendChild($minus);
   $row2.appendChild($count);
   $row2.appendChild($plus);
@@ -404,9 +415,8 @@ function deckPoke(id) {
     const pokemon = xhr.response;
     const $col = renderPokeDeckCard(pokemon);
     $pokeDeck.appendChild($col);
-    const $deckCount = document.querySelector('.deck-count');
+    const $deckCount = document.getElementById(id);
     $deckCount.textContent = data.deck[id];
-    $deckCount.classList.add(id);
     hideLoading();
   });
   xhr.send();
@@ -416,7 +426,60 @@ function deckPoke(id) {
 $addBtn.addEventListener('click', function (e) {
   const $viewPoke = document.querySelector('.view-poke');
   const $cardId = $viewPoke.dataset.cardid;
-  data.deck[$cardId] = 1;
-  deckPoke($cardId);
+  const keys = Object.keys(data.deck);
+  if (keys.includes($cardId) === false) {
+    data.deck[$cardId] = 1;
+    deckPoke($cardId);
+    viewSwap('poke-deck-div');
+  } else {
+    const $deckCount = document.getElementById($cardId);
+    if (Number($deckCount.textContent) <= 3) {
+      $deckCount.textContent = Number($deckCount.textContent) + 1;
+      data.deck[$cardId] = $deckCount.textContent;
+      viewSwap('poke-deck-div');
+    }
+  }
   viewSwap('poke-deck-div');
+});
+
+window.addEventListener('load', function (e) {
+  const keys = Object.keys(data.deck);
+  if (keys.length > 0) {
+    const keys = Object.keys(data.deck);
+    for (let i = 0; i < keys.length; i++) {
+      deckPoke(keys[i]);
+    }
+    viewSwap('poke-deck-div');
+  }
+  if (data.cardData.length > 0 && keys.length === 0) {
+    searchPoke(data.cardData.data);
+    viewSwap('poke-search-div');
+  }
+});
+
+$pokeDeck.addEventListener('click', e => {
+  const cardId = e.target.dataset.cardid;
+  const targetClassList = e.target.classList;
+
+  if (targetClassList.contains('fa-plus') === true) {
+    const $deckCount = document.getElementById(e.target.dataset.cardid);
+    if (Number($deckCount.textContent) <= 3) {
+      $deckCount.textContent = Number($deckCount.textContent) + 1;
+      data.deck[cardId] = $deckCount.textContent;
+    } else {
+      return;
+    }
+  }
+
+  if (targetClassList.contains('fa-minus') === true) {
+    const $deckCount = document.getElementById(e.target.dataset.cardid);
+    if (Number($deckCount.textContent) > 1) {
+      $deckCount.textContent = Number($deckCount.textContent) - 1;
+      data.deck[cardId] = $deckCount.textContent;
+    } else {
+      delete data.deck[cardId];
+      const $col = $deckCount.closest('.column-sixth');
+      $col.remove();
+    }
+  }
 });

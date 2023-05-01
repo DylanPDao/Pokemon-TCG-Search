@@ -1,3 +1,13 @@
+/* styling intro screen */
+.poke-main-div {
+  justify-content: center;
+  align-items: center;
+}
+
+.oak {
+  margin-bottom: 1rem;
+}
+
 /* sizing the boxes for conent */
 .main-row {
   justify-content: center;
@@ -136,43 +146,6 @@ li {
   }
 }
 
-/* add animations */
-.ham-set,
-.ham-back,
-.btn,
-li,
-.fa-solid {
-  transition: 0.5s;
-}
-
-.ham-set:hover,
-.ham-back:hover,
-.btn:hover,
-li:hover,
-.fa-solid:hover {
-  cursor: pointer;
-}
-
-.btn:hover,
-li:hover {
-  transform: translate(3px);
-}
-
-.fa-arrow-left:hover {
-  transform: translate(-5px);
-}
-
-.fa-arrow-right:hover {
-  transform: translate(5px);
-}
-
-.fa-arrow-left:active,
-.fa-arrow-right:active,
-.fa-minus:active,
-.fa-plus:active {
-  transform: translateY(-5px);
-}
-
 /* loading animation */
 .loading-container {
   display: flex;
@@ -223,4 +196,40 @@ li:hover {
 .poke-deck-row {
   justify-content: space-around;
   align-items: center;
+}
+
+/* add animations */
+.ham-set,
+.ham-back,
+.btn,
+li,
+.fa-solid,
+.fa-plus,
+.fa-minus {
+  transition: 0.5s;
+}
+
+.ham-set:hover,
+.ham-back:hover,
+.btn:hover,
+li:hover,
+.fa-solid:hover,
+.fa-plus:hover,
+.fa-minus:hover {
+  cursor: pointer;
+}
+
+.btn:hover,
+li:hover {
+  transform: translate(3px);
+}
+
+.fa-arrow-left:active,
+.fa-minus:active {
+  transform: translate(-1rem);
+}
+
+.fa-arrow-right:active,
+.fa-plus:active {
+  transform: translate(1rem);
 }
