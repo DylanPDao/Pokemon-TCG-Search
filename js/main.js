@@ -445,6 +445,7 @@ $addBtn.addEventListener('click', function (e) {
     data.deck[$cardId] = 1;
     deckPoke($cardId);
     getCardsInDeck();
+    getDeckTotal();
     viewSwap('poke-deck-div');
   } else {
     const $deckCount = document.getElementById($cardId);
@@ -452,6 +453,7 @@ $addBtn.addEventListener('click', function (e) {
       $deckCount.textContent = Number($deckCount.textContent) + 1;
       data.deck[$cardId] = $deckCount.textContent;
       getCardsInDeck();
+      getDeckTotal();
       viewSwap('poke-deck-div');
     }
   }
@@ -489,6 +491,7 @@ $pokeDeck.addEventListener('click', e => {
     } else {
       return;
     }
+    getDeckTotal();
     getCardsInDeck();
   }
 
@@ -502,6 +505,7 @@ $pokeDeck.addEventListener('click', e => {
       const $col = $deckCount.closest('.column-sixth');
       $col.remove();
     }
+    getDeckTotal();
     getCardsInDeck();
   }
 });
