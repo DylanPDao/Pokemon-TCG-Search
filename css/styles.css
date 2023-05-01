@@ -198,6 +198,13 @@ li {
   align-items: center;
 }
 
+/* deck count and deck price styling */
+.cards-in-deck,
+.cards-total {
+  padding: 0;
+  height: 0.25rem;
+}
+
 /* add animations */
 .ham-set,
 .ham-back,
