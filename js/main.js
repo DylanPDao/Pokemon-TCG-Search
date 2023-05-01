@@ -19,6 +19,7 @@ const $deckBtn = document.querySelector('.deck-btn');
 const $addBtn = document.querySelector('.add-btn');
 const $viewBtn = document.querySelector('.view-btn');
 const $deckViewCount = document.querySelector('.cards-in-deck-div');
+const $deckViewCountText = document.querySelector('.cards-in-deck');
 const $deckPrice = document.querySelector('.cards-total-div');
 const $rightArrow = document.querySelector('.fa-arrow-right');
 const $leftArrow = document.querySelector('.fa-arrow-left');
@@ -439,12 +440,14 @@ $addBtn.addEventListener('click', function (e) {
   if (keys.includes($cardId) === false) {
     data.deck[$cardId] = 1;
     deckPoke($cardId);
+    getCardsInDeck();
     viewSwap('poke-deck-div');
   } else {
     const $deckCount = document.getElementById($cardId);
     if (Number($deckCount.textContent) <= 3) {
       $deckCount.textContent = Number($deckCount.textContent) + 1;
       data.deck[$cardId] = $deckCount.textContent;
+      getCardsInDeck();
       viewSwap('poke-deck-div');
     }
   }
@@ -459,10 +462,12 @@ window.addEventListener('load', function (e) {
     for (let i = 0; i < keys.length; i++) {
       deckPoke(keys[i]);
     }
+    getCardsInDeck();
     viewSwap('poke-deck-div');
   }
   if (data.cardData.length > 0 && keys.length === 0) {
     searchPoke(data.cardData.data);
+    getCardsInDeck();
     viewSwap('poke-search-div');
   }
 });
@@ -480,6 +485,7 @@ $pokeDeck.addEventListener('click', e => {
     } else {
       return;
     }
+    getCardsInDeck();
   }
 
   if (targetClassList.contains('fa-minus') === true) {
@@ -492,5 +498,16 @@ $pokeDeck.addEventListener('click', e => {
       const $col = $deckCount.closest('.column-sixth');
       $col.remove();
     }
+    getCardsInDeck();
   }
 });
+
+// get deck count and update deck count function
+// const $deckPriceText = document.querySelector('.cards-total');
+function getCardsInDeck() {
+  let deckCardCount = 0;
+  for (const key in data.deck) {
+    deckCardCount += Number(data.deck[key]);
+  }
+  $deckViewCountText.textContent = `Cards in Deck: ${deckCardCount}`;
+}
