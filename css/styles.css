@@ -199,10 +199,12 @@ li {
 }
 
 /* deck count and deck price styling */
-.cards-in-deck,
-.cards-total {
-  padding: 0;
-  height: 0.25rem;
+.cards-in-deck-div,
+.cards-total-div {
+  display: flex;
+  padding-top: 1rem;
+  align-items: center;
+  max-height: 1rem;
 }
 
 /* add animations */

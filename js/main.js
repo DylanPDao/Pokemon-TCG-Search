@@ -15,10 +15,12 @@ const $searchBtn = document.querySelector('.search-btn');
 const $form = document.querySelector('form');
 
 // ui controls
-const $rightArrow = document.querySelector('.fa-arrow-right');
 const $deckBtn = document.querySelector('.deck-btn');
-const $viewBtn = document.querySelector('.view-btn');
 const $addBtn = document.querySelector('.add-btn');
+const $viewBtn = document.querySelector('.view-btn');
+const $deckViewCount = document.querySelector('.cards-in-deck-div');
+const $deckPrice = document.querySelector('.cards-total-div');
+const $rightArrow = document.querySelector('.fa-arrow-right');
 const $leftArrow = document.querySelector('.fa-arrow-left');
 const $questionMark = document.querySelector('.fa-magnifying-glass');
 const $ham = document.querySelector('.fa-bars');
@@ -71,6 +73,8 @@ function uiControlSwap(view) {
     $deckBtn.classList.remove('hidden');
     $searchBtn.classList.add('hidden');
     $addBtn.classList.add('hidden');
+    $deckPrice.classList.add('hidden');
+    $deckViewCount.classList.add('hidden');
   } else if (view === 'details') {
     $viewBtn.classList.add('hidden');
     $rightArrow.classList.add('hidden');
@@ -78,6 +82,9 @@ function uiControlSwap(view) {
     $deckBtn.classList.remove('hidden');
     $searchBtn.classList.remove('hidden');
     $addBtn.classList.remove('hidden');
+    $deckPrice.classList.add('hidden');
+    $deckViewCount.classList.add('hidden');
+
   } else {
     $viewBtn.classList.remove('hidden');
     $searchBtn.classList.remove('hidden');
@@ -85,6 +92,8 @@ function uiControlSwap(view) {
     $leftArrow.classList.add('hidden');
     $deckBtn.classList.add('hidden');
     $addBtn.classList.add('hidden');
+    $deckPrice.classList.remove('hidden');
+    $deckViewCount.classList.remove('hidden');
   }
 }
 // ui functionality
@@ -442,6 +451,7 @@ $addBtn.addEventListener('click', function (e) {
   viewSwap('poke-deck-div');
 });
 
+// on load, brings back previously used info
 window.addEventListener('load', function (e) {
   const keys = Object.keys(data.deck);
   if (keys.length > 0) {
@@ -457,6 +467,7 @@ window.addEventListener('load', function (e) {
   }
 });
 
+// minus and plus icon on deck view functionality
 $pokeDeck.addEventListener('click', e => {
   const cardId = e.target.dataset.cardid;
   const targetClassList = e.target.classList;
