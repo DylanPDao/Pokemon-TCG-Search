@@ -135,10 +135,12 @@ $legalRow.addEventListener('click', function (e) {
       $toggleOn.classList.add('hidden');
       $toggleOff.classList.remove('hidden');
       legality = false;
+      searchPokeSet(searchName);
     } else {
       $toggleOn.classList.remove('hidden');
       $toggleOff.classList.add('hidden');
       legality = true;
+      searchPokeSet(searchName);
     }
   }
 });
@@ -183,8 +185,13 @@ function renderPokeSearch(pokemon) {
 // make the http request after hitting enter on search bar
 function searchPoke(name) {
   const xhr = new XMLHttpRequest();
+  let targetUrl;
+  if (legality === true) {
+    targetUrl = encodeURIComponent('https://api.pokemontcg.io/v2/cards/?q=name:' + name + '*' + ' legalities.standard:legal&pageSize=8&page=' + pokeCount);
+  } else {
+    targetUrl = encodeURIComponent('https://api.pokemontcg.io/v2/cards/?q=name:' + name + '*' + '&pageSize=8&page=' + pokeCount);
+  }
   displayLoading();
-  const targetUrl = encodeURIComponent('https://api.pokemontcg.io/v2/cards/?q=name:' + name + '*' + '&pageSize=8&page=' + pokeCount);
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
   xhr.setRequestHeader('X-Api-Key', 'f81270c6-9d17-41a7-90ff-04e77b2b4273');
   xhr.responseType = 'json';
@@ -278,7 +285,12 @@ function searchPokeSeries(setName) {
 function searchPokeSet(setId) {
   const xhr = new XMLHttpRequest();
   displayLoading();
-  const targetUrl = encodeURIComponent('https://api.pokemontcg.io/v2/cards/?q=set.id:' + setId + '&pageSize=8&page=' + pokeCount);
+  let targetUrl;
+  if (legality === true) {
+    targetUrl = encodeURIComponent('https://api.pokemontcg.io/v2/cards/?q=set.id:' + setId + ' legalities.standard:legal&pageSize=8&page=' + pokeCount);
+  } else {
+    targetUrl = encodeURIComponent('https://api.pokemontcg.io/v2/cards/?q=set.id:' + setId + '&pageSize=8&page=' + pokeCount);
+  }
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
   xhr.setRequestHeader('X-Api-Key', 'f81270c6-9d17-41a7-90ff-04e77b2b4273');
   xhr.responseType = 'json';
