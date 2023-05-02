@@ -263,7 +263,7 @@ function searchPokeSet(setId) {
         hideLoading();
       }
     } else {
-      for (let i = 0; i < $found[i].length; i++) {
+      for (let i = 0; i < $found.length; i++) {
         $found[i].src = data.cardData.data[i].images.large;
         $found[i].setAttribute('data-cardId', data.cardData.data[i].id);
         $found[i].classList.add('set-search');
