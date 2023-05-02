@@ -86,6 +86,7 @@
 .arrows {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .btn {
@@ -224,6 +225,21 @@ li {
   .cards-total-div {
     align-self: flex-start;
   }
+}
+
+/* toggle switch */
+.fa-toggle-on,
+.fa-toggle-off {
+  font-size: 1rem;
+  color: #0e3b43;
+  margin-left: 1rem;
+}
+
+.legal-row {
+  display: flex;
+  align-items: center;
+  height: 1rem;
+  margin-top: 0.8rem;
 }
 
 /* add animations */

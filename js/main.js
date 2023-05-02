@@ -26,6 +26,9 @@ const $deckPriceText = document.querySelector('.cards-total');
 const $rightArrow = document.querySelector('.fa-arrow-right');
 const $leftArrow = document.querySelector('.fa-arrow-left');
 const $questionMark = document.querySelector('.fa-magnifying-glass');
+const $toggleOn = document.querySelector('.fa-toggle-on');
+const $toggleOff = document.querySelector('.fa-toggle-off');
+const $legalRow = document.querySelector('.legal-row');
 
 // side bar declarations
 const $ham = document.querySelector('.fa-bars');
@@ -34,7 +37,8 @@ const $ul = document.querySelector('ul');
 const $main = document.querySelectorAll('.main2');
 const $li = document.querySelectorAll('li');
 
-// search scrolling
+// variable initial value declaration
+const legality = true;
 let pokeCount = 1;
 let searchName = '';
 
@@ -78,6 +82,13 @@ function uiControlSwap(view) {
     $deckPrice.classList.add('hidden');
     $deckViewCount.classList.add('hidden');
     $deckPriceBtn.classList.add('hidden');
+    if (legality === true) {
+      $toggleOn.classList.remove('hidden');
+    }
+    if (legality === false) {
+      $toggleOff.classList.remove('hidden');
+    }
+    $legalRow.classList.remove('hidden');
   } else if (view === 'details') {
     $viewBtn.classList.add('hidden');
     $rightArrow.classList.add('hidden');
@@ -88,6 +99,9 @@ function uiControlSwap(view) {
     $deckPrice.classList.add('hidden');
     $deckViewCount.classList.add('hidden');
     $deckPriceBtn.classList.add('hidden');
+    $toggleOn.classList.add('hidden');
+    $toggleOff.classList.add('hidden');
+    $legalRow.classList.add('hidden');
   } else {
     $viewBtn.classList.remove('hidden');
     $searchBtn.classList.remove('hidden');
@@ -98,6 +112,9 @@ function uiControlSwap(view) {
     $deckPrice.classList.add('hidden');
     $deckViewCount.classList.remove('hidden');
     $deckPriceBtn.classList.remove('hidden');
+    $toggleOn.classList.add('hidden');
+    $toggleOff.classList.add('hidden');
+    $legalRow.classList.add('hidden');
   }
 }
 // ui functionality
