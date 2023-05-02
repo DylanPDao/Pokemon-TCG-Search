@@ -38,7 +38,7 @@ const $main = document.querySelectorAll('.main2');
 const $li = document.querySelectorAll('li');
 
 // variable initial value declaration
-const legality = true;
+let legality = true;
 let pokeCount = 1;
 let searchName = '';
 
@@ -126,6 +126,21 @@ $searchBtn.addEventListener('click', function (e) {
 });
 $deckBtn.addEventListener('click', function (e) {
   viewSwap('poke-deck-div');
+});
+
+// toggle switch function
+$legalRow.addEventListener('click', function (e) {
+  if (e.target.classList.contains('fa-solid') === true) {
+    if (legality === true) {
+      $toggleOn.classList.add('hidden');
+      $toggleOff.classList.remove('hidden');
+      legality = false;
+    } else {
+      $toggleOn.classList.remove('hidden');
+      $toggleOff.classList.add('hidden');
+      legality = true;
+    }
+  }
 });
 
 // arrows can move forward or backwards for searched cards;

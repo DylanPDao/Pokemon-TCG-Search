@@ -230,9 +230,8 @@ li {
 /* toggle switch */
 .fa-toggle-on,
 .fa-toggle-off {
-  font-size: 1rem;
   color: #0e3b43;
-  margin-left: 1rem;
+  margin-left: 0.5rem;
 }
 
 .legal-row {
