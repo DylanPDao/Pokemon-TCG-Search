@@ -45,7 +45,8 @@
 }
 
 @media screen and (min-width: 768px) {
-  .container {
+  .container,
+  .loading-container {
     max-width: 900px;
   }
 

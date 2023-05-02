@@ -70,17 +70,31 @@
 }
 
 /* add button and page buttons */
+.fa-arrow-left,
+.fa-arrow-right {
+  font-size: 2rem;
+}
+
+.fa-arrow-left {
+  padding-right: 3rem;
+}
+
+.fa-arrow-right {
+  padding-left: 3rem;
+}
+
+.arrows {
+  display: flex;
+  justify-content: center;
+}
+
 .btn {
   background-color: #0e3b43;
   color: #f4b266;
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
-}
-
-.fa-arrow-left,
-.fa-arrow-right {
-  font-size: 2rem;
+  margin: 0.25rem;
 }
 
 .arrow-row {
@@ -120,6 +134,7 @@ ul {
 li {
   display: flex;
   flex-direction: column;
+  padding: 0.5rem;
 }
 
 /* style poke info div */
@@ -151,10 +166,8 @@ li {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: auto;
-  margin-right: auto;
-  height: 100%;
-  width: 100%;
+  height: 80%;
+  width: 95%;
   position: absolute;
 }
 
@@ -164,9 +177,7 @@ li {
   border: 5px solid #f3f3f3;
   border-top: 6px solid #4f000b;
   border-radius: 100%;
-  margin: auto;
   animation: spin 1s infinite linear;
-  position: absolute;
 }
 
 @keyframes spin {
@@ -216,7 +227,8 @@ li {
 }
 
 /* add animations */
-.ham-set,
+
+.ham-series,
 .ham-back,
 .btn,
 li,
@@ -226,7 +238,7 @@ li,
   transition: 0.5s;
 }
 
-.ham-set:hover,
+.ham-series:hover,
 .ham-back:hover,
 .btn:hover,
 li:hover,
@@ -236,6 +248,8 @@ li:hover,
   cursor: pointer;
 }
 
+.ham-series:hover,
+.ham-back:hover,
 .btn:hover,
 li:hover {
   transform: translate(3px);
