@@ -70,12 +70,31 @@
 }
 
 /* add button and page buttons */
+.fa-arrow-left,
+.fa-arrow-right {
+  font-size: 2rem;
+}
+
+.fa-arrow-left {
+  padding-right: 3rem;
+}
+
+.fa-arrow-right {
+  padding-left: 3rem;
+}
+
+.arrows {
+  display: flex;
+  justify-content: center;
+}
+
 .btn {
   background-color: #0e3b43;
   color: #f4b266;
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
+  margin: 0.25rem;
 }
 
 .arrow-row {
@@ -208,23 +227,6 @@ li {
 }
 
 /* add animations */
-.fa-arrow-left,
-.fa-arrow-right {
-  font-size: 2rem;
-}
-
-.fa-arrow-left {
-  padding-right: 1rem;
-}
-
-.fa-arrow-right {
-  padding-left: 1rem;
-}
-
-.arrows {
-  display: flex;
-  justify-content: center;
-}
 
 .ham-series,
 .ham-back,
