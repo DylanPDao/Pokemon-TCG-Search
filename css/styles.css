@@ -78,11 +78,6 @@
   border-radius: 0.25rem;
 }
 
-.fa-arrow-left,
-.fa-arrow-right {
-  font-size: 2rem;
-}
-
 .arrow-row {
   justify-content: space-around;
 }
@@ -213,6 +208,24 @@ li {
 }
 
 /* add animations */
+.fa-arrow-left,
+.fa-arrow-right {
+  font-size: 2rem;
+}
+
+.fa-arrow-left {
+  padding-right: 1rem;
+}
+
+.fa-arrow-right {
+  padding-left: 1rem;
+}
+
+.arrows {
+  display: flex;
+  justify-content: center;
+}
+
 .ham-series,
 .ham-back,
 .btn,
