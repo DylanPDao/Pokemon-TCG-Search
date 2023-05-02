@@ -35,8 +35,8 @@ const $main = document.querySelectorAll('.main2');
 const $li = document.querySelectorAll('li');
 
 // search scrolling
-let pokeIndex = 8;
-let pokeCount = 8;
+let pokeCount = 1;
+let searchName = '';
 
 // search bar focus in and out
 $questionMark.addEventListener('click', function (e) {
@@ -113,32 +113,14 @@ $deckBtn.addEventListener('click', function (e) {
 
 // arrows can move forward or backwards for searched cards;
 $rightArrow.addEventListener('click', function (e) {
-  if (data.cardData.length !== 0) {
-    const foundPoke = document.querySelectorAll('.found-poke');
-    let cardCount = 0;
-    pokeCount += 8;
-    for (pokeIndex; pokeIndex < pokeCount; pokeIndex++) {
-      foundPoke[cardCount].src = data.cardData.data[pokeIndex].images.large;
-      foundPoke[cardCount].dataset.cardid = data.cardData.data[pokeIndex].id;
-      if (cardCount < 7) {
-        cardCount++;
-      }
-    }
-  }
+  pokeCount++;
+  searchPoke(searchName);
 });
+
 $leftArrow.addEventListener('click', function (e) {
-  if (pokeIndex >= 16) {
-    const foundPoke = document.querySelectorAll('.found-poke');
-    let cardCount = 0;
-    pokeIndex -= 16;
-    pokeCount -= 8;
-    for (pokeIndex; pokeIndex < pokeCount; pokeIndex++) {
-      foundPoke[cardCount].src = data.cardData.data[pokeIndex].images.large;
-      foundPoke[cardCount].dataset.cardid = data.cardData.data[pokeIndex].id;
-      if (cardCount < 7) {
-        cardCount++;
-      }
-    }
+  if (pokeCount > 1) {
+    pokeCount--;
+    searchPoke(searchName);
   }
 });
 
@@ -158,13 +140,14 @@ function renderPokeSearch(pokemon) {
 function searchPoke(name) {
   const xhr = new XMLHttpRequest();
   displayLoading();
-  const targetUrl = encodeURIComponent('https://api.pokemontcg.io/v2/cards/?q=name:' + name + '*');
+  const targetUrl = encodeURIComponent('https://api.pokemontcg.io/v2/cards/?q=name:' + name + '*' + '&pageSize=8&page=' + pokeCount);
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
   xhr.setRequestHeader('X-Api-Key', 'f81270c6-9d17-41a7-90ff-04e77b2b4273');
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     data.cardData = xhr.response;
     const $found = document.querySelectorAll('.found-poke');
+    searchName = name;
     if ($found.length === 0) {
       for (let i = 0; i < 8; i++) {
         const image = renderPokeSearch(data.cardData.data[i].images.large);
@@ -187,6 +170,8 @@ function searchPoke(name) {
 $form.addEventListener('submit', function (e) {
   event.preventDefault();
   const $value = $form.elements[0].value;
+  pokeCount = 1;
+  searchName = '';
   searchPoke($value);
   viewSwap('poke-search-div');
   uiControlSwap('search');
@@ -247,7 +232,7 @@ function searchPokeSeries(setName) {
 function searchPokeSet(setId) {
   const xhr = new XMLHttpRequest();
   displayLoading();
-  const targetUrl = encodeURIComponent('https://api.pokemontcg.io/v2/cards/?q=set.id:' + setId);
+  const targetUrl = encodeURIComponent('https://api.pokemontcg.io/v2/cards/?q=set.id:' + setId + '&pageSize=8&page=' + pokeCount);
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
   xhr.setRequestHeader('X-Api-Key', 'f81270c6-9d17-41a7-90ff-04e77b2b4273');
   xhr.responseType = 'json';
