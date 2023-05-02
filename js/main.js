@@ -113,14 +113,26 @@ $deckBtn.addEventListener('click', function (e) {
 
 // arrows can move forward or backwards for searched cards;
 $rightArrow.addEventListener('click', function (e) {
-  pokeCount++;
-  searchPoke(searchName);
+  const $foundArrow = document.querySelectorAll('.found-poke');
+  if ($foundArrow[0].classList.contains('set-search') === true) {
+    pokeCount++;
+    searchPokeSet(searchName);
+  } else {
+    pokeCount++;
+    searchPoke(searchName);
+  }
 });
 
 $leftArrow.addEventListener('click', function (e) {
+  const $foundArrow = document.querySelectorAll('.found-poke');
   if (pokeCount > 1) {
-    pokeCount--;
-    searchPoke(searchName);
+    if ($foundArrow[0].classList.contains('set-search') === true) {
+      pokeCount--;
+      searchPokeSet(searchName);
+    } else {
+      pokeCount--;
+      searchPoke(searchName);
+    }
   }
 });
 
@@ -152,6 +164,7 @@ function searchPoke(name) {
       for (let i = 0; i < 8; i++) {
         const image = renderPokeSearch(data.cardData.data[i].images.large);
         image.setAttribute('data-cardId', data.cardData.data[i].id);
+        image.classList.remove('set-search');
         $pokeSearch.appendChild(image);
         hideLoading();
       }
@@ -159,6 +172,7 @@ function searchPoke(name) {
       for (let i = 0; i < 8; i++) {
         $found[i].src = data.cardData.data[i].images.large;
         $found[i].setAttribute('data-cardId', data.cardData.data[i].id);
+        $found[i].classList.remove('set-search');
         hideLoading();
       }
     }
@@ -238,18 +252,21 @@ function searchPokeSet(setId) {
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     data.cardData = xhr.response;
+    searchName = setId;
     const $found = document.querySelectorAll('.found-poke');
     if ($found.length === 0) {
-      for (let i = 0; i < 8; i++) {
+      for (let i = 0; i < data.cardData.data.length; i++) {
         const image = renderPokeSearch(data.cardData.data[i].images.large);
         image.setAttribute('data-cardId', data.cardData.data[i].id);
         $pokeSearch.appendChild(image);
+        image.classList.add('set-search');
         hideLoading();
       }
     } else {
-      for (let i = 0; i < 8; i++) {
+      for (let i = 0; i < $found[i].length; i++) {
         $found[i].src = data.cardData.data[i].images.large;
         $found[i].setAttribute('data-cardId', data.cardData.data[i].id);
+        $found[i].classList.add('set-search');
         hideLoading();
       }
     }
