@@ -200,7 +200,6 @@ $ham.addEventListener('click', function (e) {
 });
 
 $hamMenu.addEventListener('click', function (e) {
-
   if (e.target.className === 'ham-series') {
     $ul.classList.remove('hidden');
   }
@@ -270,13 +269,26 @@ function searchPokeSet(setId) {
   xhr.send();
 }
 
+// hide menu after searching
+function hideSideMenu() {
+  $ul.classList.add('hidden');
+  $hamMenu.classList.add('hidden');
+  for (let i = 0; i < $li.length; i++) {
+    if ($li[i].hasChildNodes() === true) {
+      while ($li[i].firstChild) {
+        $li[i].removeChild($li[i].firstChild);
+      }
+    }
+  }
+}
+
 $ul.addEventListener('click', function (e) {
   if (e.target.className === 'sets') {
     const setID = e.target.dataset.set;
     searchPokeSet(setID);
     viewSwap('poke-search-div');
     uiControlSwap('search');
-    // hideSideMenu();
+    hideSideMenu();
   }
 });
 
