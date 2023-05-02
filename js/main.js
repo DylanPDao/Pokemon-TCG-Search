@@ -206,6 +206,9 @@ $hamMenu.addEventListener('click', function (e) {
   if (e.target.className === 'series') {
     searchPokeSeries(e.target.dataset.setId);
   }
+  if (e.target.className === 'ham-back') {
+    hideSideMenu();
+  }
 });
 
 // render list for appending
@@ -273,13 +276,6 @@ function searchPokeSet(setId) {
 function hideSideMenu() {
   $ul.classList.add('hidden');
   $hamMenu.classList.add('hidden');
-  for (let i = 0; i < $li.length; i++) {
-    if ($li[i].hasChildNodes() === true) {
-      while ($li[i].firstChild) {
-        $li[i].removeChild($li[i].firstChild);
-      }
-    }
-  }
 }
 
 $ul.addEventListener('click', function (e) {
