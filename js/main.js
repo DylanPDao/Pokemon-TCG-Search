@@ -26,14 +26,13 @@ const $deckPriceText = document.querySelector('.cards-total');
 const $rightArrow = document.querySelector('.fa-arrow-right');
 const $leftArrow = document.querySelector('.fa-arrow-left');
 const $questionMark = document.querySelector('.fa-magnifying-glass');
+
+// side bar declarations
 const $ham = document.querySelector('.fa-bars');
 const $hamMenu = document.querySelector('.ham-menu');
-const $hamSet = document.querySelector('.ham-set');
-const $setList = document.querySelector('.set-list');
-const $back = document.querySelector('.ham-back');
 const $ul = document.querySelector('ul');
 const $main = document.querySelectorAll('.main2');
-const $setImg = document.querySelectorAll('.set-img');
+const $li = document.querySelectorAll('li');
 
 // search scrolling
 let pokeIndex = 8;
@@ -199,22 +198,47 @@ $form.addEventListener('submit', function (e) {
 $ham.addEventListener('click', function (e) {
   $hamMenu.classList.remove('hidden');
 });
-$hamSet.addEventListener('click', function (e) {
-  $setList.classList.remove('hidden');
-  for (let i = 0; i < $setImg.length; i++) {
-    $setImg[i].classList.remove('hidden');
-  }
-});
-$back.addEventListener('click', function (e) {
-  $hamMenu.classList.add('hidden');
-  for (let i = 0; i < $setImg.length; i++) {
-    $setImg[i].classList.add('hidden');
-  }
-});
-// hide side menu
-function hideSideMenu() {
-  $hamMenu.classList.add('hidden');
 
+$hamMenu.addEventListener('click', function (e) {
+
+  if (e.target.className === 'ham-series') {
+    $ul.classList.remove('hidden');
+  }
+  if (e.target.className === 'series') {
+    searchPokeSeries(e.target.dataset.setId);
+  }
+});
+
+// render list for appending
+function renderSeriesList(series) {
+  const $li1 = document.createElement('li');
+  $li1.textContent = series.name;
+  $li1.dataset.set = series.id;
+  $li1.className = 'sets';
+  return $li1;
+}
+
+// search for series pictures
+function searchPokeSeries(setName) {
+  const xhr = new XMLHttpRequest();
+  displayLoading();
+  const targetUrl = encodeURIComponent('https://api.pokemontcg.io/v2/sets/?q=series:' + setName);
+  xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
+  xhr.setRequestHeader('X-Api-Key', 'f81270c6-9d17-41a7-90ff-04e77b2b4273');
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function () {
+    const series = xhr.response;
+    for (let i = 0; i < series.data.length; i++) {
+      const seriesName = renderSeriesList(series.data[i]);
+      for (let j = 0; j < $li.length; j++) {
+        if ($li[j].dataset.setId === series.data[i].series) {
+          $li[j].appendChild(seriesName);
+        }
+      }
+    }
+    hideLoading();
+  });
+  xhr.send();
 }
 
 // search by set id
@@ -245,13 +269,14 @@ function searchPokeSet(setId) {
   });
   xhr.send();
 }
+
 $ul.addEventListener('click', function (e) {
-  if (e.target.tagName === 'IMG') {
+  if (e.target.className === 'sets') {
     const setID = e.target.dataset.set;
     searchPokeSet(setID);
     viewSwap('poke-search-div');
     uiControlSwap('search');
-    hideSideMenu();
+    // hideSideMenu();
   }
 });
 

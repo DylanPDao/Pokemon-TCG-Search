@@ -120,6 +120,7 @@ ul {
 li {
   display: flex;
   flex-direction: column;
+  padding: 0.5rem;
 }
 
 /* style poke info div */
@@ -216,7 +217,7 @@ li {
 }
 
 /* add animations */
-.ham-set,
+.ham-series,
 .ham-back,
 .btn,
 li,
@@ -226,7 +227,7 @@ li,
   transition: 0.5s;
 }
 
-.ham-set:hover,
+.ham-series:hover,
 .ham-back:hover,
 .btn:hover,
 li:hover,
@@ -236,6 +237,8 @@ li:hover,
   cursor: pointer;
 }
 
+.ham-series:hover,
+.ham-back:hover,
 .btn:hover,
 li:hover {
   transform: translate(3px);
