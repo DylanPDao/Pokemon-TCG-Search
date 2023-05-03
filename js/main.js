@@ -37,21 +37,14 @@ const $ul = document.querySelector('ul');
 const $main = document.querySelectorAll('.main2');
 const $li = document.querySelectorAll('li');
 
+// loading display
+const $loaderContainer = document.querySelector('.loading-container');
+const $loader = document.querySelector('.loading');
+
 // variable initial value declaration
 let legality = true;
 let pokeCount = 1;
 let searchName = '';
-
-// search bar focus in and out
-$questionMark.addEventListener('click', function (e) {
-  $searchBarRow.classList.remove('hidden');
-  $searchBar.style.opacity = 1;
-  $searchBar.focus();
-});
-$searchBar.addEventListener('focusout', function (e) {
-  $searchBarRow.classList.add('hidden');
-  $searchBar.style.opacity = 0;
-});
 
 // view swap
 function viewSwap(view) {
@@ -117,58 +110,6 @@ function uiControlSwap(view) {
     $legalRow.classList.add('hidden');
   }
 }
-// ui functionality
-$viewBtn.addEventListener('click', function (e) {
-  viewSwap('poke-details');
-});
-$searchBtn.addEventListener('click', function (e) {
-  viewSwap('poke-search-div');
-});
-$deckBtn.addEventListener('click', function (e) {
-  viewSwap('poke-deck-div');
-});
-
-// toggle switch function
-$legalRow.addEventListener('click', function (e) {
-  if (e.target.classList.contains('fa-solid') === true) {
-    if (legality === true) {
-      $toggleOn.classList.add('hidden');
-      $toggleOff.classList.remove('hidden');
-      legality = false;
-      searchPokeSet(searchName);
-    } else {
-      $toggleOn.classList.remove('hidden');
-      $toggleOff.classList.add('hidden');
-      legality = true;
-      searchPokeSet(searchName);
-    }
-  }
-});
-
-// arrows can move forward or backwards for searched cards;
-$rightArrow.addEventListener('click', function (e) {
-  const $foundArrow = document.querySelectorAll('.found-poke');
-  if ($foundArrow[0].classList.contains('set-search') === true) {
-    pokeCount++;
-    searchPokeSet(searchName);
-  } else {
-    pokeCount++;
-    searchPoke(searchName);
-  }
-});
-
-$leftArrow.addEventListener('click', function (e) {
-  const $foundArrow = document.querySelectorAll('.found-poke');
-  if (pokeCount > 1) {
-    if ($foundArrow[0].classList.contains('set-search') === true) {
-      pokeCount--;
-      searchPokeSet(searchName);
-    } else {
-      pokeCount--;
-      searchPoke(searchName);
-    }
-  }
-});
 
 // render pokemon onto search screen
 function renderPokeSearch(pokemon) {
@@ -243,42 +184,12 @@ function searchPoke(name) {
   xhr.send();
 }
 
-// get info from form and populate page
-$form.addEventListener('submit', function (e) {
-  event.preventDefault();
-  const $value = $form.elements[0].value;
-  pokeCount = 1;
-  searchName = '';
-  searchPoke($value);
-  viewSwap('poke-search-div');
-  uiControlSwap('search');
-  $searchBar.blur();
-  $searchBar.value = '';
-});
-
-// side bar menu functionality
-$ham.addEventListener('click', function (e) {
-  $hamMenu.classList.remove('hidden');
-});
-
-$hamMenu.addEventListener('click', function (e) {
-  if (e.target.className === 'ham-series') {
-    $ul.classList.remove('hidden');
-  }
-  if (e.target.className === 'series') {
-    searchPokeSeries(e.target.dataset.setId);
-  }
-  if (e.target.className === 'ham-back') {
-    hideSideMenu();
-  }
-});
-
 // render list for appending
 function renderSeriesList(series) {
   const $li1 = document.createElement('li');
   $li1.textContent = series.name;
   $li1.dataset.set = series.id;
-  $li1.className = 'sets';
+  $li1.className = 'sets series';
   return $li1;
 }
 
@@ -368,45 +279,13 @@ function searchPokeSet(setId) {
 
 // hide menu after searching
 function hideSideMenu() {
+  const seriesSet = document.getElementsByClassName('series sets');
   $ul.classList.add('hidden');
   $hamMenu.classList.add('hidden');
+  while (seriesSet[0]) {
+    seriesSet[0].parentNode.removeChild(seriesSet[0]);
+  }
 }
-
-$ul.addEventListener('click', function (e) {
-  if (e.target.className === 'sets') {
-    const setID = e.target.dataset.set;
-    searchPokeSet(setID);
-    viewSwap('poke-search-div');
-    uiControlSwap('search');
-    hideSideMenu();
-  }
-});
-
-// view card details
-$pokeSearchDiv.addEventListener('click', function (e) {
-  if (e.target.classList.contains('found-poke')) {
-    for (let i = 0; i < data.cardData.data.length; i++) {
-      if (e.target.dataset.cardid === data.cardData.data[i].id) {
-        const $viewPoke = document.querySelectorAll('.view-poke');
-        if ($viewPoke.length === 0) {
-          const image = renderPokeSearch(data.cardData.data[i].images.large);
-          image.setAttribute('data-cardId', data.cardData.data[i].id);
-          image.className = 'column-100 view-poke';
-          $pokeView.appendChild(image);
-          viewSwap('poke-details');
-          const pokeInfo = renderPokeInfo(data.cardData.data[i]);
-          $pokeInfo.appendChild(pokeInfo);
-        } else {
-          $viewPoke[0].src = data.cardData.data[i].images.large;
-          $viewPoke[0].dataset.cardid = data.cardData.data[i].id;
-          viewSwap('poke-details');
-          const pokeInfo = renderPokeInfo(data.cardData.data[i]);
-          $pokeInfo.appendChild(pokeInfo);
-        }
-      }
-    }
-  }
-});
 
 // pokemon info rendering
 function renderPokeInfo(pokemon) {
@@ -496,14 +375,12 @@ function renderPokeInfo(pokemon) {
   return $infoCol;
 }
 
-// loading display
-const $loaderContainer = document.querySelector('.loading-container');
-const $loader = document.querySelector('.loading');
 // show loading
 function displayLoading() {
   $loaderContainer.classList.remove('hidden');
   $loader.classList.remove('hidden');
 }
+
 // hide loading
 function hideLoading() {
   $loaderContainer.classList.add('hidden');
@@ -563,6 +440,50 @@ function deckPoke(id) {
   xhr.send();
 }
 
+// get deck count and update deck count function
+function getCardsInDeck() {
+  let deckCardCount = 0;
+  for (const key in data.deck) {
+    deckCardCount += Number(data.deck[key]);
+  }
+  $deckViewCountText.textContent = `Cards in Deck: ${deckCardCount}`;
+}
+
+// get deck price
+function getDeckTotal() {
+  const deckKeys = Object.keys(data.deck);
+  let deckPrice = 0;
+  for (let i = 0; i < deckKeys.length; i++) {
+    const xhr = new XMLHttpRequest();
+    displayLoading();
+    const targetUrl = encodeURIComponent('https://api.pokemontcg.io/v2/cards/' + deckKeys[i]);
+    xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
+    xhr.setRequestHeader('X-Api-Key', 'f81270c6-9d17-41a7-90ff-04e77b2b4273');
+    xhr.responseType = 'json';
+    xhr.addEventListener('load', function () {
+      const pokemon = xhr.response;
+      const key = deckKeys[i];
+      const price = pokemon.data.cardmarket.prices.avg30 * data.deck[key];
+      deckPrice = deckPrice + price;
+      hideLoading();
+      $deckPriceText.textContent = `Deck Total: $${Math.round(deckPrice)}`;
+    });
+    xhr.send();
+  }
+  $deckPrice.classList.remove('hidden');
+}
+
+// side menu event listener
+$ul.addEventListener('click', function (e) {
+  if (e.target.className === 'sets') {
+    const setID = e.target.dataset.set;
+    searchPokeSet(setID);
+    viewSwap('poke-search-div');
+    uiControlSwap('search');
+    hideSideMenu();
+  }
+});
+
 // add button functionality
 $addBtn.addEventListener('click', function (e) {
   const $viewPoke = document.querySelector('.view-poke');
@@ -585,6 +506,107 @@ $addBtn.addEventListener('click', function (e) {
     }
   }
   viewSwap('poke-deck-div');
+});
+
+$deckPriceBtn.addEventListener('click', function (e) {
+  getDeckTotal();
+});
+
+// get info from form and populate page
+$form.addEventListener('submit', function (e) {
+  event.preventDefault();
+  const $value = $form.elements[0].value;
+  pokeCount = 1;
+  searchName = '';
+  searchPoke($value);
+  viewSwap('poke-search-div');
+  uiControlSwap('search');
+  $searchBar.blur();
+  $searchBar.value = '';
+});
+
+// search bar focus in and out
+$questionMark.addEventListener('click', function (e) {
+  $searchBarRow.classList.remove('hidden');
+  $searchBar.style.opacity = 1;
+  $searchBar.focus();
+});
+
+$searchBar.addEventListener('focusout', function (e) {
+  $searchBarRow.classList.add('hidden');
+  $searchBar.style.opacity = 0;
+});
+
+// ui functionality
+$viewBtn.addEventListener('click', function (e) {
+  viewSwap('poke-details');
+});
+
+$searchBtn.addEventListener('click', function (e) {
+  viewSwap('poke-search-div');
+});
+
+$deckBtn.addEventListener('click', function (e) {
+  viewSwap('poke-deck-div');
+});
+
+// toggle switch function
+$legalRow.addEventListener('click', function (e) {
+  if (e.target.classList.contains('fa-solid') === true) {
+    if (legality === true) {
+      $toggleOn.classList.add('hidden');
+      $toggleOff.classList.remove('hidden');
+      legality = false;
+      searchPokeSet(searchName);
+    } else {
+      $toggleOn.classList.remove('hidden');
+      $toggleOff.classList.add('hidden');
+      legality = true;
+      searchPokeSet(searchName);
+    }
+  }
+});
+
+// arrows can move forward or backwards for searched cards;
+$rightArrow.addEventListener('click', function (e) {
+  const $foundArrow = document.querySelectorAll('.found-poke');
+  if ($foundArrow[0].classList.contains('set-search') === true) {
+    pokeCount++;
+    searchPokeSet(searchName);
+  } else {
+    pokeCount++;
+    searchPoke(searchName);
+  }
+});
+
+$leftArrow.addEventListener('click', function (e) {
+  const $foundArrow = document.querySelectorAll('.found-poke');
+  if (pokeCount > 1) {
+    if ($foundArrow[0].classList.contains('set-search') === true) {
+      pokeCount--;
+      searchPokeSet(searchName);
+    } else {
+      pokeCount--;
+      searchPoke(searchName);
+    }
+  }
+});
+
+// side bar menu functionality
+$ham.addEventListener('click', function (e) {
+  $hamMenu.classList.remove('hidden');
+});
+
+$hamMenu.addEventListener('click', function (e) {
+  if (e.target.className === 'ham-series') {
+    $ul.classList.remove('hidden');
+  }
+  if (e.target.className === 'series') {
+    searchPokeSeries(e.target.dataset.setId);
+  }
+  if (e.target.className === 'ham-back') {
+    hideSideMenu();
+  }
 });
 
 // on load, brings back previously used info
@@ -635,39 +657,28 @@ $pokeDeck.addEventListener('click', e => {
   }
 });
 
-// get deck count and update deck count function
-function getCardsInDeck() {
-  let deckCardCount = 0;
-  for (const key in data.deck) {
-    deckCardCount += Number(data.deck[key]);
+// view card details
+$pokeSearchDiv.addEventListener('click', function (e) {
+  if (e.target.classList.contains('found-poke')) {
+    for (let i = 0; i < data.cardData.data.length; i++) {
+      if (e.target.dataset.cardid === data.cardData.data[i].id) {
+        const $viewPoke = document.querySelectorAll('.view-poke');
+        if ($viewPoke.length === 0) {
+          const image = renderPokeSearch(data.cardData.data[i].images.large);
+          image.setAttribute('data-cardId', data.cardData.data[i].id);
+          image.className = 'column-100 view-poke';
+          $pokeView.appendChild(image);
+          viewSwap('poke-details');
+          const pokeInfo = renderPokeInfo(data.cardData.data[i]);
+          $pokeInfo.appendChild(pokeInfo);
+        } else {
+          $viewPoke[0].src = data.cardData.data[i].images.large;
+          $viewPoke[0].dataset.cardid = data.cardData.data[i].id;
+          viewSwap('poke-details');
+          const pokeInfo = renderPokeInfo(data.cardData.data[i]);
+          $pokeInfo.appendChild(pokeInfo);
+        }
+      }
+    }
   }
-  $deckViewCountText.textContent = `Cards in Deck: ${deckCardCount}`;
-}
-
-// get deck price
-function getDeckTotal() {
-  const deckKeys = Object.keys(data.deck);
-  let deckPrice = 0;
-  for (let i = 0; i < deckKeys.length; i++) {
-    const xhr = new XMLHttpRequest();
-    displayLoading();
-    const targetUrl = encodeURIComponent('https://api.pokemontcg.io/v2/cards/' + deckKeys[i]);
-    xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
-    xhr.setRequestHeader('X-Api-Key', 'f81270c6-9d17-41a7-90ff-04e77b2b4273');
-    xhr.responseType = 'json';
-    xhr.addEventListener('load', function () {
-      const pokemon = xhr.response;
-      const key = deckKeys[i];
-      const price = pokemon.data.cardmarket.prices.avg30 * data.deck[key];
-      deckPrice = deckPrice + price;
-      hideLoading();
-      $deckPriceText.textContent = `Deck Total: $${Math.round(deckPrice)}`;
-    });
-    xhr.send();
-  }
-  $deckPrice.classList.remove('hidden');
-}
-
-$deckPriceBtn.addEventListener('click', function (e) {
-  getDeckTotal();
 });
