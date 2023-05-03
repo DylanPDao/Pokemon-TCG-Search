@@ -198,19 +198,43 @@ function searchPoke(name) {
   xhr.addEventListener('load', function () {
     data.cardData = xhr.response;
     const $found = document.querySelectorAll('.found-poke');
+    const cardData1 = data.cardData.data;
     searchName = name;
     if ($found.length === 0) {
-      for (let i = 0; i < 8; i++) {
-        const image = renderPokeSearch(data.cardData.data[i].images.large);
-        image.setAttribute('data-cardId', data.cardData.data[i].id);
+      for (let i = 0; i < cardData1.length; i++) {
+        const image = renderPokeSearch(cardData1[i].images.large);
+        image.setAttribute('data-cardId', cardData1[i].id);
         image.classList.remove('set-search');
         $pokeSearch.appendChild(image);
         hideLoading();
       }
+    } else if (cardData1.length < 8) {
+      for (let i = 0; i < cardData1.length; i++) {
+        $found[i].src = cardData1[i].images.large;
+        $found[i].setAttribute('data-cardId', cardData1[i].id);
+        $found[i].classList.remove('set-search');
+      }
+      for (let i = cardData1.length; i < $found.length; i++) {
+        $found[i].remove();
+      }
+      hideLoading();
+    } else if ($found.length < cardData1.length) {
+      for (let i = 0; i < $found.length; i++) {
+        $found[i].src = cardData1[i].images.large;
+        $found[i].setAttribute('data-cardId', cardData1[i].id);
+        $found[i].classList.remove('set-search');
+      }
+      for (let i = $found.length; i < cardData1.length; i++) {
+        const image = renderPokeSearch(cardData1[i].images.large);
+        image.setAttribute('data-cardId', cardData1[i].id);
+        $pokeSearch.appendChild(image);
+        image.classList.add('set-search');
+      }
+      hideLoading();
     } else {
-      for (let i = 0; i < 8; i++) {
-        $found[i].src = data.cardData.data[i].images.large;
-        $found[i].setAttribute('data-cardId', data.cardData.data[i].id);
+      for (let i = 0; i < $found.length; i++) {
+        $found[i].src = cardData1[i].images.large;
+        $found[i].setAttribute('data-cardId', cardData1[i].id);
         $found[i].classList.remove('set-search');
         hideLoading();
       }
