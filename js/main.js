@@ -570,7 +570,6 @@ $pokeDeck.addEventListener('click', e => {
     } else {
       return;
     }
-    getDeckTotal();
     getCardsInDeck();
   }
 
@@ -584,7 +583,6 @@ $pokeDeck.addEventListener('click', e => {
       const $col = $deckCount.closest('.column-sixth');
       $col.remove();
     }
-    getDeckTotal();
     getCardsInDeck();
   }
 });
