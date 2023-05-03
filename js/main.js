@@ -306,6 +306,16 @@ function searchPokeSet(setId) {
         image.classList.add('set-search');
         hideLoading();
       }
+    } else if (data.cardData.data.length < 8) {
+      for (let i = 0; i < data.cardData.data.length; i++) {
+        $found[i].src = data.cardData.data[i].images.large;
+        $found[i].setAttribute('data-cardId', data.cardData.data[i].id);
+        $found[i].classList.add('set-search');
+      }
+      for (let i = data.cardData.data.length; i < $found.length; i++) {
+        $found[i].remove();
+      }
+      hideLoading();
     } else {
       for (let i = 0; i < $found.length; i++) {
         $found[i].src = data.cardData.data[i].images.large;
