@@ -239,6 +239,7 @@ li {
   align-items: center;
   height: 1rem;
   margin-top: 0.8rem;
+  align-self: center;
 }
 
 /* add animations */
