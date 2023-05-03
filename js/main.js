@@ -298,28 +298,42 @@ function searchPokeSet(setId) {
     data.cardData = xhr.response;
     searchName = setId;
     const $found = document.querySelectorAll('.found-poke');
+    const cardData1 = data.cardData.data;
     if ($found.length === 0) {
-      for (let i = 0; i < data.cardData.data.length; i++) {
-        const image = renderPokeSearch(data.cardData.data[i].images.large);
-        image.setAttribute('data-cardId', data.cardData.data[i].id);
+      for (let i = 0; i < cardData1.length; i++) {
+        const image = renderPokeSearch(cardData1[i].images.large);
+        image.setAttribute('data-cardId', cardData1[i].id);
         $pokeSearch.appendChild(image);
         image.classList.add('set-search');
         hideLoading();
       }
-    } else if (data.cardData.data.length < 8) {
-      for (let i = 0; i < data.cardData.data.length; i++) {
-        $found[i].src = data.cardData.data[i].images.large;
-        $found[i].setAttribute('data-cardId', data.cardData.data[i].id);
+    } else if (cardData1.length < 8) {
+      for (let i = 0; i < cardData1.length; i++) {
+        $found[i].src = cardData1[i].images.large;
+        $found[i].setAttribute('data-cardId', cardData1[i].id);
         $found[i].classList.add('set-search');
       }
-      for (let i = data.cardData.data.length; i < $found.length; i++) {
+      for (let i = cardData1.length; i < $found.length; i++) {
         $found[i].remove();
+      }
+      hideLoading();
+    } else if ($found.length < cardData1.length) {
+      for (let i = 0; i < $found.length; i++) {
+        $found[i].src = cardData1[i].images.large;
+        $found[i].setAttribute('data-cardId', cardData1[i].id);
+        $found[i].classList.add('set-search');
+      }
+      for (let i = $found.length; i < cardData1.length; i++) {
+        const image = renderPokeSearch(cardData1[i].images.large);
+        image.setAttribute('data-cardId', cardData1[i].id);
+        $pokeSearch.appendChild(image);
+        image.classList.add('set-search');
       }
       hideLoading();
     } else {
       for (let i = 0; i < $found.length; i++) {
-        $found[i].src = data.cardData.data[i].images.large;
-        $found[i].setAttribute('data-cardId', data.cardData.data[i].id);
+        $found[i].src = cardData1[i].images.large;
+        $found[i].setAttribute('data-cardId', cardData1[i].id);
         $found[i].classList.add('set-search');
         hideLoading();
       }
