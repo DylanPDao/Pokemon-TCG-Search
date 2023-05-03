@@ -475,7 +475,7 @@ function getDeckTotal() {
 
 // side menu event listener
 $ul.addEventListener('click', function (e) {
-  if (e.target.className === 'sets') {
+  if (e.target.className === 'sets series') {
     const setID = e.target.dataset.set;
     searchPokeSet(setID);
     viewSwap('poke-search-div');
@@ -552,17 +552,27 @@ $deckBtn.addEventListener('click', function (e) {
 
 // toggle switch function
 $legalRow.addEventListener('click', function (e) {
+  const $found = document.querySelectorAll('.found-poke');
+  const hasSetSearch = $found[0].classList.contains('set-search');
   if (e.target.classList.contains('fa-solid') === true) {
     if (legality === true) {
       $toggleOn.classList.add('hidden');
       $toggleOff.classList.remove('hidden');
       legality = false;
-      searchPokeSet(searchName);
+      if (hasSetSearch === true) {
+        searchPokeSet(searchName);
+      } else {
+        searchPoke(searchName);
+      }
     } else {
       $toggleOn.classList.remove('hidden');
       $toggleOff.classList.add('hidden');
       legality = true;
-      searchPokeSet(searchName);
+      if (hasSetSearch === true) {
+        searchPokeSet(searchName);
+      } else {
+        searchPoke(searchName);
+      }
     }
   }
 });
