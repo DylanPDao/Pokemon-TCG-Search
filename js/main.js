@@ -3,6 +3,7 @@
 const $pokeSearch = document.querySelector('.poke-search');
 const $pokeSearchDiv = document.querySelector('.poke-search-div');
 const $searchBarRow = document.querySelector('.search-row');
+const $pokeDeckDiv = document.querySelector('.poke-deck-div');
 
 // info blocks
 const $pokeDeck = document.querySelector('.poke-deck');
@@ -193,7 +194,7 @@ function renderSeriesList(series) {
   return $li1;
 }
 
-// search for series pictures
+// search for series names
 function searchPokeSeries(setName) {
   const xhr = new XMLHttpRequest();
   displayLoading();
@@ -435,6 +436,36 @@ function deckPoke(id) {
     $pokeDeck.appendChild($col);
     const $deckCount = document.getElementById(id);
     $deckCount.textContent = data.deck[id];
+    hideLoading();
+  });
+  xhr.send();
+}
+
+function deckToViewPoke(id) {
+  const xhr = new XMLHttpRequest();
+  displayLoading();
+  const targetUrl = encodeURIComponent('https://api.pokemontcg.io/v2/cards/' + id);
+  xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
+  xhr.setRequestHeader('X-Api-Key', 'f81270c6-9d17-41a7-90ff-04e77b2b4273');
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function () {
+    const pokemon = xhr.response;
+    const $viewPoke = document.querySelectorAll('.view-poke');
+    if ($viewPoke.length === 0) {
+      const image = renderPokeSearch(pokemon.data.images.large);
+      image.setAttribute('data-cardId', pokemon.data.id);
+      image.className = 'column-100 view-poke';
+      $pokeView.appendChild(image);
+      viewSwap('poke-details');
+      const pokeInfo = renderPokeInfo(pokemon.data);
+      $pokeInfo.appendChild(pokeInfo);
+    } else {
+      $viewPoke[0].src = pokemon.data.images.large;
+      $viewPoke[0].dataset.cardid = pokemon.data.id;
+      viewSwap('poke-details');
+      const pokeInfo = renderPokeInfo(pokemon.data);
+      $pokeInfo.appendChild(pokeInfo);
+    }
     hideLoading();
   });
   xhr.send();
@@ -690,5 +721,12 @@ $pokeSearchDiv.addEventListener('click', function (e) {
         }
       }
     }
+  }
+});
+
+$pokeDeckDiv.addEventListener('click', function (e) {
+  if (e.target.tagName === 'IMG') {
+    const $cardId = e.target.dataset.cardid;
+    deckToViewPoke($cardId);
   }
 });
