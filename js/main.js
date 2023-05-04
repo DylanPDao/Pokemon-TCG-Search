@@ -43,7 +43,7 @@ const $loaderContainer = document.querySelector('.loading-container');
 const $loader = document.querySelector('.loading');
 
 // variable initial value declaration
-let legality = false;
+let legality = true;
 let pokeCount = 1;
 let searchName = '';
 
@@ -250,25 +250,47 @@ function searchPokeSet(setId) {
     const cardData1 = data.cardData.data;
     if ($found.length === 0) {
       for (let i = 0; i < cardData1.length; i++) {
-        imageLoading(cardData1[i]);
+        const image = renderPokeSearch(cardData1[i].images.large);
+        image.setAttribute('data-cardId', cardData1[i].id);
+        $pokeSearch.appendChild(image);
+        image.setAttribute('alt', `Pokemon Card: ${cardData1[i].name}`);
+        image.classList.add('set-search');
+        hideLoading();
       }
     } else if (cardData1.length < 8) {
-      existing1ImageLoading(cardData1);
+      for (let i = 0; i < cardData1.length; i++) {
+        $found[i].src = cardData1[i].images.large;
+        $found[i].setAttribute('data-cardId', cardData1[i].id);
+        $found[i].setAttribute('alt', `Pokemon Card: ${cardData1[i].name}`);
+        $found[i].classList.add('set-search');
+      }
       for (let i = cardData1.length; i < $found.length; i++) {
         $found[i].remove();
       }
       hideLoading();
     } else if ($found.length < cardData1.length) {
-      existing2ImageLoading(cardData1);
+      for (let i = 0; i < $found.length; i++) {
+        $found[i].src = cardData1[i].images.large;
+        $found[i].setAttribute('data-cardId', cardData1[i].id);
+        $found[i].setAttribute('alt', `Pokemon Card: ${cardData1[i].name}`);
+        $found[i].classList.add('set-search');
+      }
       for (let i = $found.length; i < cardData1.length; i++) {
-        imageLoading(cardData1[i]);
+        const image = renderPokeSearch(cardData1[i].images.large);
+        image.setAttribute('data-cardId', cardData1[i].id);
+        image.setAttribute('alt', `Pokemon Card: ${cardData1[i].name}`);
+        $pokeSearch.appendChild(image);
+        image.classList.add('set-search');
       }
       hideLoading();
     } else {
-      existing2ImageLoading(cardData1);
-    }
-    for (let i = 0; i < $found.length; i++) {
-      $found[i].classList.add('set-search');
+      for (let i = 0; i < $found.length; i++) {
+        $found[i].src = cardData1[i].images.large;
+        $found[i].setAttribute('data-cardId', cardData1[i].id);
+        $found[i].classList.add('set-search');
+        $found[i].setAttribute('alt', `Pokemon Card: ${cardData1[i].name}`);
+        hideLoading();
+      }
     }
   });
   xhr.send();
@@ -582,9 +604,9 @@ $deckBtn.addEventListener('click', function (e) {
 
 // toggle switch function
 $legalRow.addEventListener('click', function (e) {
+  const $found = document.querySelectorAll('.found-poke');
+  const hasSetSearch = $found[0].classList.contains('set-search');
   if (e.target.classList.contains('fa-solid') === true) {
-    const $found = document.querySelectorAll('.found-poke');
-    const hasSetSearch = $found[0].classList.contains('set-search');
     if (legality === true) {
       $toggleOn.classList.add('hidden');
       $toggleOff.classList.remove('hidden');
