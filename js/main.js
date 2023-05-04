@@ -30,6 +30,8 @@ const $questionMark = document.querySelector('.fa-magnifying-glass');
 const $toggleOn = document.querySelector('.fa-toggle-on');
 const $toggleOff = document.querySelector('.fa-toggle-off');
 const $legalRow = document.querySelector('.legal-row');
+const $noCardsText = document.querySelector('.no-cards');
+const $arrowRow = document.querySelector('.arrow-row');
 
 // side bar declarations
 const $ham = document.querySelector('.fa-bars');
@@ -48,6 +50,7 @@ let legality = false;
 let pokeCount = 1;
 let searchName = '';
 let whichSearch = '';
+let clickedSeries = [];
 
 // view swap
 function viewSwap(view) {
@@ -60,8 +63,10 @@ function viewSwap(view) {
         uiControlSwap('search');
       } else if (view === 'poke-details') {
         uiControlSwap('details');
-      } else {
+      } else if (view === 'poke-deck-div') {
         uiControlSwap();
+      } else {
+        $arrowRow.classList.add('hidden');
       }
     }
   }
@@ -78,10 +83,13 @@ function uiControlSwap(view) {
     $deckPrice.classList.add('hidden');
     $deckViewCount.classList.add('hidden');
     $deckPriceBtn.classList.add('hidden');
+    $arrowRow.classList.remove('hidden');
     if (legality === true) {
       $toggleOn.classList.remove('hidden');
+      $toggleOff.classList.add('hidden');
     } else {
       $toggleOff.classList.remove('hidden');
+      $toggleOn.classList.add('hidden');
     }
     $legalRow.classList.remove('hidden');
   } else if (view === 'details') {
@@ -97,6 +105,7 @@ function uiControlSwap(view) {
     $toggleOn.classList.add('hidden');
     $toggleOff.classList.add('hidden');
     $legalRow.classList.add('hidden');
+    $arrowRow.classList.remove('hidden');
   } else {
     $viewBtn.classList.remove('hidden');
     $searchBtn.classList.remove('hidden');
@@ -110,6 +119,7 @@ function uiControlSwap(view) {
     $toggleOn.classList.add('hidden');
     $toggleOff.classList.add('hidden');
     $legalRow.classList.add('hidden');
+    $arrowRow.classList.remove('hidden');
   }
 }
 
@@ -136,6 +146,7 @@ function imageLoading(pokemon) {
   }
   $pokeSearch.appendChild(image);
   hideLoading();
+  toggleNoCards();
 }
 // load search images if existing image is there
 // cardData.length
@@ -151,6 +162,7 @@ function existing1ImageLoading(pokemon) {
     }
     $found[i].setAttribute('alt', `Pokemon Card: ${pokemon[i].name}`);
   }
+  toggleNoCards();
   hideLoading();
 }
 
@@ -168,7 +180,17 @@ function existing2ImageLoading(pokemon) {
     }
     $found[i].setAttribute('alt', `Pokemon Card: ${pokemon[i].name}`);
   }
+  toggleNoCards();
   hideLoading();
+}
+
+// hide/function no cards text
+function toggleNoCards() {
+  if (data.cardData.data.length !== 0) {
+    $noCardsText.classList.add('hidden');
+  } else {
+    $noCardsText.classList.remove('hidden');
+  }
 }
 
 // make the http request after hitting enter on search bar
@@ -193,6 +215,7 @@ function searchPoke(name) {
     if ($found.length === 0) {
       for (let i = 0; i < cardData1.length; i++) {
         imageLoading(cardData1[i]);
+
       }
     } else if (cardData1.length < 8) {
       existing1ImageLoading(cardData1);
@@ -292,9 +315,12 @@ function hideSideMenu() {
   const seriesSet = document.getElementsByClassName('series sets');
   $ul.classList.add('hidden');
   $hamMenu.classList.add('hidden');
+  $ham.classList.remove('hidden');
+  $x.classList.add('hidden');
   while (seriesSet[0]) {
     seriesSet[0].parentNode.removeChild(seriesSet[0]);
   }
+  clickedSeries = [];
 }
 
 // pokemon info rendering
@@ -524,8 +550,6 @@ $ul.addEventListener('click', function (e) {
     viewSwap('poke-search-div');
     uiControlSwap('search');
     hideSideMenu();
-    $ham.classList.remove('hidden');
-    $x.classList.add('hidden');
   }
 });
 
@@ -597,14 +621,12 @@ $deckBtn.addEventListener('click', function (e) {
 
 // toggle switch function
 $legalRow.addEventListener('click', function (e) {
-  const $found = document.querySelectorAll('.found-poke');
-  const hasSetSearch = $found[0].classList.contains('set-search');
   if (e.target.classList.contains('fa-solid') === true) {
     if (legality === true) {
       $toggleOn.classList.add('hidden');
       $toggleOff.classList.remove('hidden');
       legality = false;
-      if (hasSetSearch === true) {
+      if (whichSearch === 'bySet') {
         searchPokeSet(searchName);
       } else {
         searchPoke(searchName);
@@ -613,7 +635,7 @@ $legalRow.addEventListener('click', function (e) {
       $toggleOn.classList.remove('hidden');
       $toggleOff.classList.add('hidden');
       legality = true;
-      if (hasSetSearch === true) {
+      if (whichSearch === 'bySet') {
         searchPokeSet(searchName);
       } else {
         searchPoke(searchName);
@@ -656,8 +678,6 @@ $ham.addEventListener('click', function (e) {
 
 $x.addEventListener('click', function (e) {
   hideSideMenu();
-  $ham.classList.remove('hidden');
-  $x.classList.add('hidden');
 });
 
 $hamMenu.addEventListener('click', function (e) {
@@ -665,7 +685,15 @@ $hamMenu.addEventListener('click', function (e) {
     $ul.classList.remove('hidden');
   }
   if (e.target.className === 'series') {
+    if (clickedSeries.includes(e.target.dataset.setId)) {
+      return;
+    }
     searchPokeSeries(e.target.dataset.setId);
+    clickedSeries.push(e.target.dataset.setId);
+  }
+  if (e.target.className === 'ham-home') {
+    viewSwap('poke-main-div');
+    hideSideMenu();
   }
 });
 
