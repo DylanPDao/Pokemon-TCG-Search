@@ -30,6 +30,7 @@ const $questionMark = document.querySelector('.fa-magnifying-glass');
 const $toggleOn = document.querySelector('.fa-toggle-on');
 const $toggleOff = document.querySelector('.fa-toggle-off');
 const $legalRow = document.querySelector('.legal-row');
+const $noCardsText = document.querySelector('.no-cards');
 
 // side bar declarations
 const $ham = document.querySelector('.fa-bars');
@@ -139,6 +140,7 @@ function imageLoading(pokemon) {
   }
   $pokeSearch.appendChild(image);
   hideLoading();
+  toggkeNoCards();
 }
 // load search images if existing image is there
 // cardData.length
@@ -154,6 +156,7 @@ function existing1ImageLoading(pokemon) {
     }
     $found[i].setAttribute('alt', `Pokemon Card: ${pokemon[i].name}`);
   }
+  toggkeNoCards();
   hideLoading();
 }
 
@@ -171,7 +174,17 @@ function existing2ImageLoading(pokemon) {
     }
     $found[i].setAttribute('alt', `Pokemon Card: ${pokemon[i].name}`);
   }
+  toggkeNoCards();
   hideLoading();
+}
+
+// hide/function no cards text
+function toggkeNoCards() {
+  if (data.cardData.data.length !== 0) {
+    $noCardsText.classList.add('hidden');
+  } else {
+    $noCardsText.classList.remove('hidden');
+  }
 }
 
 // make the http request after hitting enter on search bar
@@ -196,6 +209,7 @@ function searchPoke(name) {
     if ($found.length === 0) {
       for (let i = 0; i < cardData1.length; i++) {
         imageLoading(cardData1[i]);
+
       }
     } else if (cardData1.length < 8) {
       existing1ImageLoading(cardData1);

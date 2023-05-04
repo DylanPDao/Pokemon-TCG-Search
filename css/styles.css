@@ -242,6 +242,11 @@ li {
   align-self: center;
 }
 
+/* no cards text */
+.no-cards {
+  text-align: center;
+}
+
 /* add animations */
 
 .ham-series,
