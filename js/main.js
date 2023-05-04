@@ -48,7 +48,7 @@ let legality = false;
 let pokeCount = 1;
 let searchName = '';
 let whichSearch = '';
-const clickedSeries = [];
+let clickedSeries = [];
 
 // view swap
 function viewSwap(view) {
@@ -298,6 +298,7 @@ function hideSideMenu() {
   while (seriesSet[0]) {
     seriesSet[0].parentNode.removeChild(seriesSet[0]);
   }
+  clickedSeries = [];
 }
 
 // pokemon info rendering
