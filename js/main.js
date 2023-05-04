@@ -78,8 +78,7 @@ function uiControlSwap(view) {
     $deckPriceBtn.classList.add('hidden');
     if (legality === true) {
       $toggleOn.classList.remove('hidden');
-    }
-    if (legality === false) {
+    } else {
       $toggleOff.classList.remove('hidden');
     }
     $legalRow.classList.remove('hidden');
