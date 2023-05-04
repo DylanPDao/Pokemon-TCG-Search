@@ -48,6 +48,7 @@ let legality = false;
 let pokeCount = 1;
 let searchName = '';
 let whichSearch = '';
+const clickedSeries = [];
 
 // view swap
 function viewSwap(view) {
@@ -667,7 +668,11 @@ $hamMenu.addEventListener('click', function (e) {
     $ul.classList.remove('hidden');
   }
   if (e.target.className === 'series') {
+    if (clickedSeries.includes(e.target.dataset.setId)) {
+      return;
+    }
     searchPokeSeries(e.target.dataset.setId);
+    clickedSeries.push(e.target.dataset.setId);
   }
 });
 
