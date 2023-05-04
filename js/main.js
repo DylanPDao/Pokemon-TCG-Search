@@ -43,9 +43,10 @@ const $loaderContainer = document.querySelector('.loading-container');
 const $loader = document.querySelector('.loading');
 
 // variable initial value declaration
-let legality = true;
+let legality = false;
 let pokeCount = 1;
 let searchName = '';
+let whichSearch = '';
 
 // view swap
 function viewSwap(view) {
@@ -127,7 +128,11 @@ function imageLoading(pokemon) {
   const image = renderPokeSearch(pokemon.images.large);
   image.setAttribute('data-cardId', pokemon.id);
   image.setAttribute('alt', `Pokemon Card: ${pokemon.name}`);
-  image.classList.remove('set-search');
+  if (whichSearch === 'byName') {
+    image.classList.remove('set-search');
+  } else {
+    image.classList.add('set-search');
+  }
   $pokeSearch.appendChild(image);
   hideLoading();
 }
@@ -138,7 +143,11 @@ function existing1ImageLoading(pokemon) {
   for (let i = 0; i < pokemon.length; i++) {
     $found[i].src = pokemon[i].images.large;
     $found[i].setAttribute('data-cardId', pokemon[i].id);
-    $found[i].classList.remove('set-search');
+    if (whichSearch === 'byName') {
+      $found[i].classList.remove('set-search');
+    } else {
+      $found[i].classList.add('set-search');
+    }
     $found[i].setAttribute('alt', `Pokemon Card: ${pokemon[i].name}`);
   }
   hideLoading();
@@ -151,7 +160,11 @@ function existing2ImageLoading(pokemon) {
   for (let i = 0; i < $found.length; i++) {
     $found[i].src = pokemon[i].images.large;
     $found[i].setAttribute('data-cardId', pokemon[i].id);
-    $found[i].classList.remove('set-search');
+    if (whichSearch === 'byName') {
+      $found[i].classList.remove('set-search');
+    } else {
+      $found[i].classList.add('set-search');
+    }
     $found[i].setAttribute('alt', `Pokemon Card: ${pokemon[i].name}`);
   }
   hideLoading();
@@ -175,6 +188,7 @@ function searchPoke(name) {
     data.cardData = xhr.response;
     const cardData1 = data.cardData.data;
     searchName = name;
+    whichSearch = 'byName';
     if ($found.length === 0) {
       for (let i = 0; i < cardData1.length; i++) {
         imageLoading(cardData1[i]);
@@ -246,51 +260,27 @@ function searchPokeSet(setId) {
   xhr.addEventListener('load', function () {
     data.cardData = xhr.response;
     searchName = setId;
+    whichSearch = 'bySet';
     const $found = document.querySelectorAll('.found-poke');
     const cardData1 = data.cardData.data;
     if ($found.length === 0) {
       for (let i = 0; i < cardData1.length; i++) {
-        const image = renderPokeSearch(cardData1[i].images.large);
-        image.setAttribute('data-cardId', cardData1[i].id);
-        $pokeSearch.appendChild(image);
-        image.setAttribute('alt', `Pokemon Card: ${cardData1[i].name}`);
-        image.classList.add('set-search');
-        hideLoading();
+        imageLoading(cardData1[i]);
       }
     } else if (cardData1.length < 8) {
-      for (let i = 0; i < cardData1.length; i++) {
-        $found[i].src = cardData1[i].images.large;
-        $found[i].setAttribute('data-cardId', cardData1[i].id);
-        $found[i].setAttribute('alt', `Pokemon Card: ${cardData1[i].name}`);
-        $found[i].classList.add('set-search');
-      }
+      existing1ImageLoading(cardData1);
       for (let i = cardData1.length; i < $found.length; i++) {
         $found[i].remove();
       }
       hideLoading();
     } else if ($found.length < cardData1.length) {
-      for (let i = 0; i < $found.length; i++) {
-        $found[i].src = cardData1[i].images.large;
-        $found[i].setAttribute('data-cardId', cardData1[i].id);
-        $found[i].setAttribute('alt', `Pokemon Card: ${cardData1[i].name}`);
-        $found[i].classList.add('set-search');
-      }
+      existing2ImageLoading(cardData1);
       for (let i = $found.length; i < cardData1.length; i++) {
-        const image = renderPokeSearch(cardData1[i].images.large);
-        image.setAttribute('data-cardId', cardData1[i].id);
-        image.setAttribute('alt', `Pokemon Card: ${cardData1[i].name}`);
-        $pokeSearch.appendChild(image);
-        image.classList.add('set-search');
+        imageLoading(cardData1[i]);
       }
       hideLoading();
     } else {
-      for (let i = 0; i < $found.length; i++) {
-        $found[i].src = cardData1[i].images.large;
-        $found[i].setAttribute('data-cardId', cardData1[i].id);
-        $found[i].classList.add('set-search');
-        $found[i].setAttribute('alt', `Pokemon Card: ${cardData1[i].name}`);
-        hideLoading();
-      }
+      existing2ImageLoading(cardData1);
     }
   });
   xhr.send();
@@ -669,6 +659,10 @@ $hamMenu.addEventListener('click', function (e) {
   if (e.target.className === 'ham-back') {
     hideSideMenu();
   }
+});
+
+$hamMenu.addEventListener('focusout', function (e) {
+  hideSideMenu();
 });
 
 // on load, brings back previously used info
