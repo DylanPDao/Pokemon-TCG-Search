@@ -615,14 +615,12 @@ $deckBtn.addEventListener('click', function (e) {
 
 // toggle switch function
 $legalRow.addEventListener('click', function (e) {
-  const $found = document.querySelectorAll('.found-poke');
-  const hasSetSearch = $found[0].classList.contains('set-search');
   if (e.target.classList.contains('fa-solid') === true) {
     if (legality === true) {
       $toggleOn.classList.add('hidden');
       $toggleOff.classList.remove('hidden');
       legality = false;
-      if (hasSetSearch === true) {
+      if (whichSearch === 'bySet') {
         searchPokeSet(searchName);
       } else {
         searchPoke(searchName);
@@ -631,7 +629,7 @@ $legalRow.addEventListener('click', function (e) {
       $toggleOn.classList.remove('hidden');
       $toggleOff.classList.add('hidden');
       legality = true;
-      if (hasSetSearch === true) {
+      if (whichSearch === 'bySet') {
         searchPokeSet(searchName);
       } else {
         searchPoke(searchName);
