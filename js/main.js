@@ -37,6 +37,7 @@ const $hamMenu = document.querySelector('.ham-menu');
 const $ul = document.querySelector('ul');
 const $main = document.querySelectorAll('.main2');
 const $li = document.querySelectorAll('li');
+const $x = document.querySelector('.fa-x');
 
 // loading display
 const $loaderContainer = document.querySelector('.loading-container');
@@ -523,6 +524,8 @@ $ul.addEventListener('click', function (e) {
     viewSwap('poke-search-div');
     uiControlSwap('search');
     hideSideMenu();
+    $ham.classList.remove('hidden');
+    $x.classList.add('hidden');
   }
 });
 
@@ -647,6 +650,14 @@ $leftArrow.addEventListener('click', function (e) {
 // side bar menu functionality
 $ham.addEventListener('click', function (e) {
   $hamMenu.classList.remove('hidden');
+  $ham.classList.add('hidden');
+  $x.classList.remove('hidden');
+});
+
+$x.addEventListener('click', function (e) {
+  hideSideMenu();
+  $ham.classList.remove('hidden');
+  $x.classList.add('hidden');
 });
 
 $hamMenu.addEventListener('click', function (e) {
@@ -656,13 +667,6 @@ $hamMenu.addEventListener('click', function (e) {
   if (e.target.className === 'series') {
     searchPokeSeries(e.target.dataset.setId);
   }
-  if (e.target.className === 'ham-back') {
-    hideSideMenu();
-  }
-});
-
-$hamMenu.addEventListener('focusout', function (e) {
-  hideSideMenu();
 });
 
 // on load, brings back previously used info
