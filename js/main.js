@@ -31,6 +31,7 @@ const $toggleOn = document.querySelector('.fa-toggle-on');
 const $toggleOff = document.querySelector('.fa-toggle-off');
 const $legalRow = document.querySelector('.legal-row');
 const $noCardsText = document.querySelector('.no-cards');
+const $arrowRow = document.querySelector('.arrow-row');
 
 // side bar declarations
 const $ham = document.querySelector('.fa-bars');
@@ -62,8 +63,10 @@ function viewSwap(view) {
         uiControlSwap('search');
       } else if (view === 'poke-details') {
         uiControlSwap('details');
-      } else {
+      } else if (view === 'poke-deck-div') {
         uiControlSwap();
+      } else {
+        $arrowRow.classList.add('hidden');
       }
     }
   }
@@ -80,6 +83,7 @@ function uiControlSwap(view) {
     $deckPrice.classList.add('hidden');
     $deckViewCount.classList.add('hidden');
     $deckPriceBtn.classList.add('hidden');
+    $arrowRow.classList.remove('hidden');
     if (legality === true) {
       $toggleOn.classList.remove('hidden');
       $toggleOff.classList.add('hidden');
@@ -101,6 +105,7 @@ function uiControlSwap(view) {
     $toggleOn.classList.add('hidden');
     $toggleOff.classList.add('hidden');
     $legalRow.classList.add('hidden');
+    $arrowRow.classList.remove('hidden');
   } else {
     $viewBtn.classList.remove('hidden');
     $searchBtn.classList.remove('hidden');
@@ -114,6 +119,7 @@ function uiControlSwap(view) {
     $toggleOn.classList.add('hidden');
     $toggleOff.classList.add('hidden');
     $legalRow.classList.add('hidden');
+    $arrowRow.classList.remove('hidden');
   }
 }
 
@@ -309,6 +315,8 @@ function hideSideMenu() {
   const seriesSet = document.getElementsByClassName('series sets');
   $ul.classList.add('hidden');
   $hamMenu.classList.add('hidden');
+  $ham.classList.remove('hidden');
+  $x.classList.add('hidden');
   while (seriesSet[0]) {
     seriesSet[0].parentNode.removeChild(seriesSet[0]);
   }
@@ -542,8 +550,6 @@ $ul.addEventListener('click', function (e) {
     viewSwap('poke-search-div');
     uiControlSwap('search');
     hideSideMenu();
-    $ham.classList.remove('hidden');
-    $x.classList.add('hidden');
   }
 });
 
@@ -672,8 +678,6 @@ $ham.addEventListener('click', function (e) {
 
 $x.addEventListener('click', function (e) {
   hideSideMenu();
-  $ham.classList.remove('hidden');
-  $x.classList.add('hidden');
 });
 
 $hamMenu.addEventListener('click', function (e) {
@@ -686,6 +690,10 @@ $hamMenu.addEventListener('click', function (e) {
     }
     searchPokeSeries(e.target.dataset.setId);
     clickedSeries.push(e.target.dataset.setId);
+  }
+  if (e.target.className === 'ham-home') {
+    viewSwap('poke-main-div');
+    hideSideMenu();
   }
 });
 
