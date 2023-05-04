@@ -116,7 +116,6 @@ function renderPokeSearch(pokemon) {
   // create content and give them names
   const $img = document.createElement('img');
   $img.setAttribute('src', pokemon);
-  $img.setAttribute('alt', 'image of pokemon card');
   $img.className = 'column-25 found-poke';
 
   // appending
@@ -145,6 +144,7 @@ function searchPoke(name) {
       for (let i = 0; i < cardData1.length; i++) {
         const image = renderPokeSearch(cardData1[i].images.large);
         image.setAttribute('data-cardId', cardData1[i].id);
+        image.setAttribute('alt', `Pokemon Card: ${cardData1[i].name}`);
         image.classList.remove('set-search');
         $pokeSearch.appendChild(image);
         hideLoading();
@@ -153,6 +153,7 @@ function searchPoke(name) {
       for (let i = 0; i < cardData1.length; i++) {
         $found[i].src = cardData1[i].images.large;
         $found[i].setAttribute('data-cardId', cardData1[i].id);
+        $found[i].setAttribute('alt', `Pokemon Card: ${cardData1[i].name}`);
         $found[i].classList.remove('set-search');
       }
       for (let i = cardData1.length; i < $found.length; i++) {
@@ -163,11 +164,13 @@ function searchPoke(name) {
       for (let i = 0; i < $found.length; i++) {
         $found[i].src = cardData1[i].images.large;
         $found[i].setAttribute('data-cardId', cardData1[i].id);
+        $found[i].setAttribute('alt', `Pokemon Card: ${cardData1[i].name}`);
         $found[i].classList.remove('set-search');
       }
       for (let i = $found.length; i < cardData1.length; i++) {
         const image = renderPokeSearch(cardData1[i].images.large);
         image.setAttribute('data-cardId', cardData1[i].id);
+        image.setAttribute('alt', `Pokemon Card: ${cardData1[i].name}`);
         $pokeSearch.appendChild(image);
         image.classList.add('set-search');
       }
@@ -177,6 +180,7 @@ function searchPoke(name) {
         $found[i].src = cardData1[i].images.large;
         $found[i].setAttribute('data-cardId', cardData1[i].id);
         $found[i].classList.remove('set-search');
+        $found[i].setAttribute('alt', `Pokemon Card: ${cardData1[i].name}`);
         hideLoading();
       }
     }
@@ -239,6 +243,7 @@ function searchPokeSet(setId) {
         const image = renderPokeSearch(cardData1[i].images.large);
         image.setAttribute('data-cardId', cardData1[i].id);
         $pokeSearch.appendChild(image);
+        image.setAttribute('alt', `Pokemon Card: ${cardData1[i].name}`);
         image.classList.add('set-search');
         hideLoading();
       }
@@ -246,6 +251,7 @@ function searchPokeSet(setId) {
       for (let i = 0; i < cardData1.length; i++) {
         $found[i].src = cardData1[i].images.large;
         $found[i].setAttribute('data-cardId', cardData1[i].id);
+        $found[i].setAttribute('alt', `Pokemon Card: ${cardData1[i].name}`);
         $found[i].classList.add('set-search');
       }
       for (let i = cardData1.length; i < $found.length; i++) {
@@ -256,11 +262,13 @@ function searchPokeSet(setId) {
       for (let i = 0; i < $found.length; i++) {
         $found[i].src = cardData1[i].images.large;
         $found[i].setAttribute('data-cardId', cardData1[i].id);
+        $found[i].setAttribute('alt', `Pokemon Card: ${cardData1[i].name}`);
         $found[i].classList.add('set-search');
       }
       for (let i = $found.length; i < cardData1.length; i++) {
         const image = renderPokeSearch(cardData1[i].images.large);
         image.setAttribute('data-cardId', cardData1[i].id);
+        image.setAttribute('alt', `Pokemon Card: ${cardData1[i].name}`);
         $pokeSearch.appendChild(image);
         image.classList.add('set-search');
       }
@@ -270,6 +278,7 @@ function searchPokeSet(setId) {
         $found[i].src = cardData1[i].images.large;
         $found[i].setAttribute('data-cardId', cardData1[i].id);
         $found[i].classList.add('set-search');
+        $found[i].setAttribute('alt', `Pokemon Card: ${cardData1[i].name}`);
         hideLoading();
       }
     }
