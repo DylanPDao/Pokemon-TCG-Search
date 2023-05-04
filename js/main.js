@@ -140,7 +140,7 @@ function imageLoading(pokemon) {
   }
   $pokeSearch.appendChild(image);
   hideLoading();
-  toggkeNoCards();
+  toggleNoCards();
 }
 // load search images if existing image is there
 // cardData.length
@@ -156,7 +156,7 @@ function existing1ImageLoading(pokemon) {
     }
     $found[i].setAttribute('alt', `Pokemon Card: ${pokemon[i].name}`);
   }
-  toggkeNoCards();
+  toggleNoCards();
   hideLoading();
 }
 
@@ -174,12 +174,12 @@ function existing2ImageLoading(pokemon) {
     }
     $found[i].setAttribute('alt', `Pokemon Card: ${pokemon[i].name}`);
   }
-  toggkeNoCards();
+  toggleNoCards();
   hideLoading();
 }
 
 // hide/function no cards text
-function toggkeNoCards() {
+function toggleNoCards() {
   if (data.cardData.data.length !== 0) {
     $noCardsText.classList.add('hidden');
   } else {
