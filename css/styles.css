@@ -251,7 +251,7 @@ li {
 /* add animations */
 
 .ham-series,
-.ham-back,
+.ham-home,
 .btn,
 li,
 .fa-solid,
@@ -260,6 +260,7 @@ li,
   transition: 0.5s;
 }
 
+.ham-home:hover,
 .ham-series:hover,
 .ham-back:hover,
 .btn:hover,
@@ -271,7 +272,7 @@ li:hover,
 }
 
 .ham-series:hover,
-.ham-back:hover,
+.ham-home:hover,
 .btn:hover,
 li:hover {
   transform: translate(3px);
